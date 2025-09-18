@@ -1,13 +1,17 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { ObjetivoModule } from '../types';
+import StyledButton from './StyledButton';
 
 interface Level1ObjectiveProps {
   data: ObjetivoModule;
   onUpdate: (field: keyof ObjetivoModule, value: string) => void;
+  onComplete: () => void;
 }
 
-const Level1Objective: React.FC<Level1ObjectiveProps> = ({ data, onUpdate }) => {
+const Level1Objective: React.FC<Level1ObjectiveProps> = ({ data, onUpdate, onComplete }) => {
+  const isCompletable = data.nomeAssistente.trim().length > 0 && data.missao.trim().length >= 20;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Nível 1: Objetivo & Missão 🎯</Text>
@@ -35,6 +39,12 @@ const Level1Objective: React.FC<Level1ObjectiveProps> = ({ data, onUpdate }) => 
           multiline
         />
       </View>
+
+      <StyledButton 
+        title="Concluir Nível e Avançar 🚀"
+        onPress={onComplete}
+        disabled={!isCompletable}
+      />
     </View>
   );
 };

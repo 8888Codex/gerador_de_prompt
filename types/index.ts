@@ -19,6 +19,15 @@ export interface ObjetivoModule {
   missao: string;
 }
 
+export interface PersonaModule {
+  postura: string;
+  tom: string;
+  atitude: string;
+  empatia: string;
+  genero: 'neutro' | 'feminino' | 'masculino';
+  linguagemModos: string[];
+}
+
 export interface PromptProject {
   id: string;
   name: string;
@@ -30,6 +39,7 @@ export interface PromptProject {
   
   modules: {
     objetivo: ObjetivoModule & ModuleProgress;
+    persona: PersonaModule & ModuleProgress;
     // Other modules will be added later
   };
 }
