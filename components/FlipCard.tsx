@@ -68,12 +68,20 @@ export default function FlipCard({
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(rotate.value, [0, 1], [0, 180]);
-    return { transform: [{ rotateY: `${rotateY}deg` }] };
+    return {
+      transform: [{ rotateY: `${rotateY}deg` }],
+      // Hide front when it's flipped past 90 degrees
+      opacity: interpolate(rotate.value, [0.5, 0.5], [1, 0]),
+    };
   });
 
   const backAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(rotate.value, [0, 1], [180, 360]);
-    return { transform: [{ rotateY: `${rotateY}deg` }] };
+    return {
+      transform: [{ rotateY: `${rotateY}deg` }],
+      // Show back when it's flipped past 90 degrees
+      opacity: interpolate(rotate.value, [0.5, 0.5], [0, 1]),
+    };
   });
 
   const rocketAnimatedStyle = useAnimatedStyle(() => {
