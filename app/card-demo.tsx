@@ -18,7 +18,7 @@ export default function CardDemoScreen() {
           <Text style={styles.title}>Gerador de Prompt</Text>
           <Text style={styles.subtitle}>Toque no cartão para virar</Text>
           <FlipCard 
-            title="Construa seu PROMPT com IA"
+            title="Seu PROMPT com IA"
             subtitle="Vamos criar juntos em tempo recorde"
             onPress={handleNavigate}
           />
