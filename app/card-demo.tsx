@@ -14,7 +14,10 @@ export default function CardDemoScreen() {
         <View style={styles.container}>
           <Text style={styles.title}>Gerador de Prompt</Text>
           <Text style={styles.subtitle}>Toque no cartão para virar</Text>
-          <FlipCard />
+          <FlipCard 
+            title="Construa seu PROMPT com IA"
+            subtitle="Vamos criar juntos em tempo recorde"
+          />
         </View>
       </SafeAreaView>
     </LinearGradient>
