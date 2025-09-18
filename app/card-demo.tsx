@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, SafeAreaView, StatusBar } from 'react-native';
-import FlipCard from '../components/FlipCard';
 import { router } from 'expo-router';
-import MeteorsBackground from '../components/MeteorsBackground';
+import StyledButton from '../components/StyledButton';
 
 export default function CardDemoScreen() {
   const handleNavigate = () => {
@@ -12,21 +11,14 @@ export default function CardDemoScreen() {
   return (
     <View style={styles.fullScreen}>
       <StatusBar barStyle="light-content" />
-      <MeteorsBackground number={30} />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
-          <Text style={styles.title}>Gerador de Prompt</Text>
-          <Text style={styles.subtitle}>Toque no cartão para virar</Text>
-          <FlipCard 
-            title="Seu PROMPT com IA"
-            subtitle="Vamos criar juntos em tempo recorde"
-            description="Crie, refine e exporte prompts de IA poderosos com nosso guia passo a passo."
-            features={[
-              'Processo Guiado',
-              'Melhorias com IA',
-              'Estrutura Gamificada',
-              'Exportação Rápida',
-            ]}
+          <Text style={styles.title}>Gerador de Prompt com IA</Text>
+          <Text style={styles.subtitle}>
+            Crie, refine e exporte prompts poderosos com nosso guia passo a passo.
+          </Text>
+          <StyledButton 
+            title="Começar a Construir"
             onPress={handleNavigate}
           />
         </View>
@@ -38,7 +30,7 @@ export default function CardDemoScreen() {
 const styles = StyleSheet.create({
   fullScreen: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#111827', // Dark blue-gray
   },
   safeArea: {
     flex: 1,
@@ -47,22 +39,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 24,
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 16,
     color: '#FFFFFF',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+    textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#E0E0E0',
+    fontSize: 18,
+    color: '#D1D5DB', // Lighter gray
     marginBottom: 40,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+    textAlign: 'center',
+    lineHeight: 26,
   },
 });
