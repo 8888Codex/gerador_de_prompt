@@ -2,8 +2,13 @@ import React from 'react';
 import { View, StyleSheet, Text, SafeAreaView, StatusBar } from 'react-native';
 import FlipCard from '../components/FlipCard';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 
 export default function CardDemoScreen() {
+  const handleNavigate = () => {
+    router.push('/prompt-builder');
+  };
+
   return (
     <LinearGradient
       colors={['#2d3436', '#000000']}
@@ -17,6 +22,7 @@ export default function CardDemoScreen() {
           <FlipCard 
             title="Construa seu PROMPT com IA"
             subtitle="Vamos criar juntos em tempo recorde"
+            onPress={handleNavigate}
           />
         </View>
       </SafeAreaView>

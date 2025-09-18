@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -18,6 +18,7 @@ export interface FlipCardProps {
   description?: string;
   features?: string[];
   color?: string;
+  onPress?: () => void;
 }
 
 const AnimatedCodeLine = ({ delay, width, marginLeft }: { delay: number, width: string, marginLeft: string }) => {
@@ -60,6 +61,7 @@ export default function FlipCard({
     'Otimizado para MVP',
   ],
   color = '#ff2e88',
+  onPress,
 }: FlipCardProps) {
   const rotate = useSharedValue(0);
   const rocketScale = useSharedValue(1);
@@ -148,10 +150,10 @@ export default function FlipCard({
               );
             })}
           </View>
-          <View style={styles.footerBack}>
+          <TouchableOpacity onPress={onPress} style={styles.footerBack}>
             <Text style={[styles.footerBackText, { color }]}>Comece a Construir</Text>
             <ArrowRight size={16} color={color} />
-          </View>
+          </TouchableOpacity>
         </LinearGradient>
       </Animated.View>
     </Pressable>
