@@ -9,7 +9,7 @@ import Animated, {
   withSequence,
   withDelay,
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import { Rocket, Code2, ArrowRight, Zap, Copy } from 'lucide-react-native';
 
 export interface FlipCardProps {
@@ -101,7 +101,7 @@ export default function FlipCard({
     <Pressable onPress={flipCard} style={styles.container}>
       {/* Frente do Cartão */}
       <Animated.View style={[styles.card, frontAnimatedStyle]}>
-        <LinearGradient colors={['#FFFFFF', '#F8FAFC', '#F1F5F9']} style={styles.gradient}>
+        <BlurView intensity={40} tint="dark" style={styles.blurView}>
           <View style={styles.codeBlocksContainer}>
             {[...Array(6)].map((_, i) => (
               <AnimatedCodeLine
@@ -122,12 +122,12 @@ export default function FlipCard({
             </View>
             <Zap size={20} color={color} />
           </View>
-        </LinearGradient>
+        </BlurView>
       </Animated.View>
 
       {/* Verso do Cartão */}
       <Animated.View style={[styles.card, styles.cardBack, backAnimatedStyle]}>
-        <LinearGradient colors={['#FFFFFF', '#F8FAFC', '#F1F5F9']} style={styles.gradient}>
+        <BlurView intensity={40} tint="dark" style={styles.blurView}>
           <View>
             <View style={styles.headerBack}>
               <View style={[styles.iconBackContainer, { backgroundColor: color }]}>
@@ -154,7 +154,7 @@ export default function FlipCard({
             <Text style={[styles.footerBackText, { color }]}>Comece a Construir</Text>
             <ArrowRight size={16} color={color} />
           </TouchableOpacity>
-        </LinearGradient>
+        </BlurView>
       </Animated.View>
     </Pressable>
   );
@@ -168,19 +168,18 @@ const styles = StyleSheet.create({
     height: '100%',
     backfaceVisibility: 'hidden',
     borderRadius: 20,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,
-    overflow: 'hidden',
   },
-  gradient: {
+  blurView: {
     flex: 1,
     padding: 20,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 20,
   },
   cardBack: {
     justifyContent: 'space-between',
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
   codeLine: {
     height: 10,
     borderRadius: 4,
-    backgroundColor: '#ff2e8830',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     marginVertical: 3,
   },
   rocketContainer: {
@@ -215,8 +214,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     height: '30%',
   },
-  title: { fontSize: 20, fontWeight: 'bold', color: '#1F2937' },
-  subtitle: { fontSize: 14, color: '#6B7280', marginTop: 4 },
+  title: { fontSize: 20, fontWeight: 'bold', color: '#FFFFFF' },
+  subtitle: { fontSize: 14, color: '#E0E0E0', marginTop: 4 },
   headerBack: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
   iconBackContainer: {
     width: 40,
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  description: { fontSize: 15, color: '#4B5563', lineHeight: 22 },
+  description: { fontSize: 15, color: '#E0E0E0', lineHeight: 22 },
   featuresContainer: { gap: 12 },
   featureItem: { flexDirection: 'row', alignItems: 'center' },
   featureIconContainer: {
@@ -237,14 +236,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
-  featureText: { fontSize: 14, fontWeight: '500', color: '#374151' },
+  featureText: { fontSize: 14, fontWeight: '500', color: '#FFFFFF' },
   footerBack: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: 'rgba(255, 255, 255, 0.2)',
   },
   footerBackText: { fontSize: 16, fontWeight: 'bold' },
 });
