@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text, SafeAreaView, StatusBar } from 'react-native';
 import FlipCard from '../components/FlipCard';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import MeteorsBackground from '../components/MeteorsBackground';
 
 export default function CardDemoScreen() {
   const handleNavigate = () => {
@@ -10,12 +10,10 @@ export default function CardDemoScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={['#2d3436', '#000000']}
-      style={styles.gradient}
-    >
+    <View style={styles.fullScreen}>
+      <StatusBar barStyle="light-content" />
+      <MeteorsBackground number={30} />
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="light-content" />
         <View style={styles.container}>
           <Text style={styles.title}>Gerador de Prompt</Text>
           <Text style={styles.subtitle}>Toque no cartão para virar</Text>
@@ -26,13 +24,14 @@ export default function CardDemoScreen() {
           />
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: {
+  fullScreen: {
     flex: 1,
+    backgroundColor: '#000',
   },
   safeArea: {
     flex: 1,
