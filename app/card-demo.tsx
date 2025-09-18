@@ -20,6 +20,13 @@ export default function CardDemoScreen() {
           <FlipCard 
             title="Seu PROMPT com IA"
             subtitle="Vamos criar juntos em tempo recorde"
+            description="Crie, refine e exporte prompts de IA poderosos com nosso guia passo a passo."
+            features={[
+              'Processo Guiado',
+              'Melhorias com IA',
+              'Estrutura Gamificada',
+              'Exportação Rápida',
+            ]}
             onPress={handleNavigate}
           />
         </View>

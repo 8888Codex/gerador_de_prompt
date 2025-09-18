@@ -103,7 +103,7 @@ export default function FlipCard({
     rotate.value = withTiming(rotate.value === 0 ? 1 : 0, { duration: 700 });
   };
 
-  const icons = [Copy, Code2, Rocket, Zap];
+  const icons = [Code2, Zap, Rocket, Copy];
 
   return (
     <Pressable onPress={flipCard} style={styles.container}>
