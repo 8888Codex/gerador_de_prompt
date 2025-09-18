@@ -5,6 +5,7 @@ import { LEVELS } from '../data/levels';
 import ProgressHeader from '../components/ProgressHeader';
 import Level1Objective from '../components/Level1Objective';
 import Level2Persona from '../components/Level2Persona';
+import { supabase } from '../src/integrations/supabase/client';
 
 const initialProjectState: PromptProject = {
   id: '1',
@@ -38,6 +39,7 @@ const initialProjectState: PromptProject = {
 
 export default function PromptBuilderScreen() {
   const [project, setProject] = useState<PromptProject>(initialProjectState);
+  const [improvingField, setImprovingField] = useState<keyof ObjetivoModule | null>(null);
 
   const handleObjectiveUpdate = (field: keyof ObjetivoModule, value: string) => {
     setProject(prevProject => ({
@@ -52,14 +54,39 @@ export default function PromptBuilderScreen() {
     }));
   };
 
+  const handleImproveWithAI = async (field: keyof ObjetivoModule) => {
+    const value = project.modules.objetivo[field];
+    if (!value.trim()) {
+      Alert.alert("Texto Vazio", "Por favor, escreva algo antes de pedir a ajuda da IA.");
+      return;
+    }
+
+    setImprovingField(field);
+    try {
+      const { data, error } = await supabase.functions.invoke('improve-text', {
+        body: { field, value },
+      });
+
+      if (error) throw error;
+
+      if (data.improvedText) {
+        handleObjectiveUpdate(field, data.improvedText);
+      }
+    } catch (error: any) {
+      console.error("Error invoking Supabase function:", error);
+      Alert.alert("Erro de IA", "Não foi possível melhorar o texto. Tente novamente.");
+    } finally {
+      setImprovingField(null);
+    }
+  };
+
   const handleLevel1Completion = () => {
     const { nomeAssistente, missao } = project.modules.objetivo;
 
-    // Simple scoring logic
     let score = 0;
     if (nomeAssistente.trim().length > 0) score += 40;
     if (missao.trim().length >= 20) score += 40;
-    if (missao.trim().length > 50) score += 20; // Bonus for detail
+    if (missao.trim().length > 50) score += 20;
     score = Math.min(score, 100);
 
     const level1Info = LEVELS.find(l => l.id === 1);
@@ -105,12 +132,13 @@ export default function PromptBuilderScreen() {
               data={project.modules.objetivo}
               onUpdate={handleObjectiveUpdate}
               onComplete={handleLevel1Completion}
+              onImproveRequest={handleImproveWithAI}
+              improvingField={improvingField}
             />
           )}
           {project.currentLevel === 2 && (
             <Level2Persona />
           )}
-          {/* Other levels will be rendered here based on project.currentLevel */}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -120,7 +148,7 @@ export default function PromptBuilderScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F9FAFB', // Light gray background
+    backgroundColor: '#F9FAFB',
   },
   container: {
     flex: 1,

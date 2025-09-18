@@ -2,14 +2,23 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { ObjetivoModule } from '../types';
 import StyledButton from './StyledButton';
+import AIImproveButton from './AIImproveButton';
 
 interface Level1ObjectiveProps {
   data: ObjetivoModule;
   onUpdate: (field: keyof ObjetivoModule, value: string) => void;
   onComplete: () => void;
+  onImproveRequest: (field: keyof ObjetivoModule) => void;
+  improvingField: keyof ObjetivoModule | null;
 }
 
-const Level1Objective: React.FC<Level1ObjectiveProps> = ({ data, onUpdate, onComplete }) => {
+const Level1Objective: React.FC<Level1ObjectiveProps> = ({ 
+  data, 
+  onUpdate, 
+  onComplete,
+  onImproveRequest,
+  improvingField,
+}) => {
   const isCompletable = data.nomeAssistente.trim().length > 0 && data.missao.trim().length >= 20;
 
   return (
@@ -21,23 +30,35 @@ const Level1Objective: React.FC<Level1ObjectiveProps> = ({ data, onUpdate, onCom
       
       <View style={styles.formGroup}>
         <Text style={styles.label}>Nome do Assistente (obrigatório)</Text>
-        <TextInput
-          style={styles.input}
-          value={data.nomeAssistente}
-          onChangeText={(text) => onUpdate('nomeAssistente', text)}
-          placeholder="Ex: Assistente de Vendas Proativo"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={data.nomeAssistente}
+            onChangeText={(text) => onUpdate('nomeAssistente', text)}
+            placeholder="Ex: Assistente de Vendas Proativo"
+          />
+          <AIImproveButton 
+            onPress={() => onImproveRequest('nomeAssistente')}
+            loading={improvingField === 'nomeAssistente'}
+          />
+        </View>
       </View>
 
       <View style={styles.formGroup}>
         <Text style={styles.label}>Missão (mín. 20 caracteres)</Text>
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          value={data.missao}
-          onChangeText={(text) => onUpdate('missao', text)}
-          placeholder="Descreva o principal objetivo do assistente..."
-          multiline
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            value={data.missao}
+            onChangeText={(text) => onUpdate('missao', text)}
+            placeholder="Descreva o principal objetivo do assistente..."
+            multiline
+          />
+          <AIImproveButton 
+            onPress={() => onImproveRequest('missao')}
+            loading={improvingField === 'missao'}
+          />
+        </View>
       </View>
 
       <StyledButton 
@@ -72,10 +93,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 8,
   },
-  input: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#D1D5DB',
     borderRadius: 8,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 0,
     padding: 12,
     fontSize: 16,
   },
