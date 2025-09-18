@@ -7,37 +7,45 @@ import Animated, {
   withTiming,
   withRepeat,
   withSequence,
+  Easing,
 } from 'react-native-reanimated';
 
 const AnimatedGradientBackground: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const progress = useSharedValue(0);
+  const opacity = useSharedValue(0);
 
   useEffect(() => {
-    progress.value = withRepeat(
+    opacity.value = withRepeat(
       withSequence(
-        withTiming(1, { duration: 7000 }),
-        withTiming(0, { duration: 7000 })
+        withTiming(1, { duration: 6000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 6000, easing: Easing.inOut(Easing.ease) })
       ),
       -1, // Infinite repeat
-      true // Reverse direction
+      true // Reverse on repeat
     );
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => {
-    const translateX = progress.value * 100;
     return {
-      transform: [{ translateX: `${translateX}%` }, { translateY: `${translateX}%` }],
+      opacity: opacity.value,
     };
   });
 
   return (
     <View style={styles.container}>
+      {/* Base Gradient */}
+      <LinearGradient
+        style={StyleSheet.absoluteFill}
+        colors={['#111827', '#3B82F6']}
+        start={{ x: 0.1, y: 0.1 }}
+        end={{ x: 0.9, y: 0.9 }}
+      />
+      {/* Animated Overlay Gradient */}
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
-          style={styles.gradient}
-          colors={['#3B82F6', '#111827', '#4F46E5']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+          colors={['#4F46E5', '#1F2937']}
+          start={{ x: 0.9, y: 0.1 }}
+          end={{ x: 0.1, y: 0.9 }}
         />
       </Animated.View>
       {children}
@@ -48,11 +56,6 @@ const AnimatedGradientBackground: React.FC<{ children: React.ReactNode }> = ({ c
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111827', // Fallback color
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject,
-    transform: [{ scaleX: 2 }, { scaleY: 2 }], // Scale to avoid edges showing
   },
 });
 
