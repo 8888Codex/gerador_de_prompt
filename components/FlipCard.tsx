@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   bottomContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     height: '30%',
   },
   title: { fontSize: 20, fontWeight: 'bold', color: '#1F2937' },
