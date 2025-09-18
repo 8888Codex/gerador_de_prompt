@@ -12,7 +12,7 @@ export default function CardDemoScreen() {
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="light-content" />
         <View style={styles.container}>
-          <Text style={styles.title}>Componente Flip Card</Text>
+          <Text style={styles.title}>Gerador de Prompt</Text>
           <Text style={styles.subtitle}>Toque no cartão para virar</Text>
           <FlipCard />
         </View>
