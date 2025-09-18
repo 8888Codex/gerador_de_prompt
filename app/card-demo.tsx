@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, SafeAreaView, StatusBar } from 'react-native';
 import { router } from 'expo-router';
 import StyledButton from '../components/StyledButton';
+import AnimatedGradientBackground from '../components/AnimatedGradientBackground';
 
 export default function CardDemoScreen() {
   const handleNavigate = () => {
@@ -9,7 +10,7 @@ export default function CardDemoScreen() {
   };
 
   return (
-    <View style={styles.fullScreen}>
+    <AnimatedGradientBackground>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
@@ -23,15 +24,11 @@ export default function CardDemoScreen() {
           />
         </View>
       </SafeAreaView>
-    </View>
+    </AnimatedGradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  fullScreen: {
-    flex: 1,
-    backgroundColor: '#111827', // Dark blue-gray
-  },
   safeArea: {
     flex: 1,
   },
