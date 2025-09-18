@@ -1,5 +1,10 @@
-// app/_layout.tsx
 import { Stack } from "expo-router";
+
 export default function RootLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="prompt-builder" options={{ title: 'Construtor de Prompts', headerShown: false }} />
+    </Stack>
+  );
 }
