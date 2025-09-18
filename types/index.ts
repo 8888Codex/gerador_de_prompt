@@ -25,7 +25,7 @@ export interface PersonaModule {
   atitude: string;
   empatia: string;
   genero: 'neutro' | 'feminino' | 'masculino';
-  linguagemModos: string[];
+  linguagemModos: string;
 }
 
 export interface PromptProject {
