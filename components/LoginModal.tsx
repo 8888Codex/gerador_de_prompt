@@ -1,0 +1,40 @@
+"use client";
+
+import React from 'react';
+import LoginPage from './ui/gaming-login';
+import { X } from 'lucide-react';
+
+interface LoginModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  const handleLogin = (email: string, password: string, remember: boolean) => {
+    console.log('Login attempt:', { email, password, remember });
+    // Após o login, o modal é fechado.
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <LoginPage.VideoBackground videoUrl="https://videos.pexels.com/video-files/8128311/8128311-uhd_2560_1440_25fps.mp4" />
+      
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-30 bg-black/30 p-2 rounded-full"
+        aria-label="Close modal"
+      >
+        <X size={24} />
+      </button>
+
+      <div className="relative z-20 w-full max-w-md animate-fadeIn">
+        <LoginPage.LoginForm onSubmit={handleLogin} />
+      </div>
+    </div>
+  );
+};
+
+export default LoginModal;

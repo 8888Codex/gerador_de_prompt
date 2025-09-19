@@ -1,17 +1,15 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import StyledButton from '../components/StyledButton';
 import WavyBackground from '../components/ui/blue-meshy-background';
+import LoginModal from '../components/LoginModal';
 
 export default function WelcomeScreen() {
   const router = useRouter();
-
-  const handleNavigate = () => {
-    router.push('/prompt-builder');
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <WavyBackground>
@@ -30,12 +28,13 @@ export default function WelcomeScreen() {
           </p>
           <div className="mt-10">
             <StyledButton 
-              title="Começar a Construir"
-              onClick={handleNavigate}
+              title="Começar agora"
+              onClick={() => setIsModalOpen(true)}
             />
           </div>
         </div>
       </main>
+      <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </WavyBackground>
   );
 }
