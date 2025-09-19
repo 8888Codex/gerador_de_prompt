@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePromptProject } from '../../hooks/usePromptProject';
 import LevelContent from '../../components/prompt-builder/LevelContent';
-import AnimatedGradientBackground from '../../components/ui/AnimatedGradientBackground';
+import WavyBackground from '../../components/ui/WavyBackground';
 import { supabase } from '../../src/integrations/supabase/client';
 import { ObjetivoModule, PersonaModule, AnatomiaModule, RestricoesModule } from '../../types';
 
@@ -66,8 +66,8 @@ export default function PromptBuilderPage() {
   };
 
   return (
-    <AnimatedGradientBackground>
-      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+    <WavyBackground>
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8 h-full overflow-y-auto">
         <header className="text-center mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-white">
             Construtor de Prompt
@@ -100,6 +100,6 @@ export default function PromptBuilderPage() {
           </section>
         </main>
       </div>
-    </AnimatedGradientBackground>
+    </WavyBackground>
   );
 }
