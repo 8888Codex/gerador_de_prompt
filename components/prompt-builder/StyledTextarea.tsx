@@ -20,7 +20,7 @@ const StyledTextarea: React.FC<StyledTextareaProps> = ({ label, value, onChange,
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full h-32 p-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          className={`w-full h-32 p-4 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${onImprove ? 'pr-28' : ''}`}
         />
         {onImprove && (
           <button 
