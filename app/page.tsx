@@ -23,8 +23,8 @@ export default function WelcomeScreen() {
           <Image
             src="/Codex-Logo.png"
             alt="Codex Logo"
-            width={600}
-            height={150}
+            width={400}
+            height={100}
             priority
             className="mx-auto"
           />
