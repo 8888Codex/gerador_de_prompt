@@ -4,16 +4,22 @@ import React from 'react';
 import { PromptProject } from '../../types';
 import Level1Objetivo from './levels/Level1Objetivo';
 import Level2Persona from './levels/Level2Persona';
+import Level3Variaveis from './levels/Level3Variaveis';
 
 interface LevelContentProps {
   project: PromptProject;
   onUpdateObjetivo: (field: keyof PromptProject['modules']['objetivo'], value: string) => void;
   onUpdatePersona: (field: keyof PromptProject['modules']['persona'], value: any) => void;
+  onAddVariavel: () => void;
+  onUpdateVariavel: (id: string, field: 'key' | 'description', value: string) => void;
+  onRemoveVariavel: (id: string) => void;
   onNextLevel: () => void;
   onImproveText: (level: number, field: string, value: string) => void;
 }
 
-const LevelContent: React.FC<LevelContentProps> = ({ project, onUpdateObjetivo, onUpdatePersona, onNextLevel, onImproveText }) => {
+const LevelContent: React.FC<LevelContentProps> = (props) => {
+  const { project, onUpdateObjetivo, onUpdatePersona, onAddVariavel, onUpdateVariavel, onRemoveVariavel, onNextLevel, onImproveText } = props;
+
   const renderContent = () => {
     switch (project.currentLevel) {
       case 1:
@@ -34,7 +40,16 @@ const LevelContent: React.FC<LevelContentProps> = ({ project, onUpdateObjetivo, 
             onImprove={(field, value) => onImproveText(2, field, value)}
           />
         );
-      // Futuros níveis serão adicionados aqui
+      case 3:
+        return (
+          <Level3Variaveis
+            data={project.modules.variaveis}
+            onAdd={onAddVariavel}
+            onUpdate={onUpdateVariavel}
+            onRemove={onRemoveVariavel}
+            onNext={onNextLevel}
+          />
+        );
       default:
         return <div className="text-center text-gray-400">Nível {project.currentLevel} em construção.</div>;
     }

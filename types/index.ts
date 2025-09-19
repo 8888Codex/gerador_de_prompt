@@ -28,6 +28,16 @@ export interface PersonaModule {
   linguagemModos: string;
 }
 
+export interface Variavel {
+  id: string;
+  key: string;
+  description: string;
+}
+
+export interface VariaveisModule {
+  items: Variavel[];
+}
+
 export interface PromptProject {
   id: string;
   name: string;
@@ -40,6 +50,7 @@ export interface PromptProject {
   modules: {
     objetivo: ObjetivoModule & ModuleProgress;
     persona: PersonaModule & ModuleProgress;
+    variaveis: VariaveisModule & ModuleProgress;
     // Other modules will be added later
   };
 }
