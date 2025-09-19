@@ -7,15 +7,16 @@ import { X } from 'lucide-react';
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onLoginSuccess: () => void;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   if (!isOpen) return null;
 
   const handleLogin = (email: string, password: string, remember: boolean) => {
     console.log('Login attempt:', { email, password, remember });
-    // Após o login, o modal é fechado.
-    onClose();
+    // Após o login, chama a função de sucesso para redirecionar.
+    onLoginSuccess();
   };
 
   return (
