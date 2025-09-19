@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import { AnatomiaModule, MessageSize } from '../../../types';
+import { AnatomiaModule, MessageSize, PromptProject } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
 import ExampleBox from '../ExampleBox';
 
 interface Level4AnatomiaProps {
-  data: AnatomiaModule;
+  data: PromptProject['modules']['anatomia'];
   onUpdate: (field: keyof AnatomiaModule, value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof AnatomiaModule, value: string) => void;

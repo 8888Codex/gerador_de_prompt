@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import { PersonaModule } from '../../../types';
+import { PersonaModule, PromptProject } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
 import ExampleBox from '../ExampleBox';
 
 interface Level2PersonaProps {
-  data: PersonaModule;
+  data: PromptProject['modules']['persona'];
   onUpdate: (field: keyof PersonaModule, value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof PersonaModule, value: string) => void;

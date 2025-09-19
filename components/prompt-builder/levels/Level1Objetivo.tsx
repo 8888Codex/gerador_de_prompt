@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import { ObjetivoModule } from '../../../types';
+import { ObjetivoModule, PromptProject } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
 import ExampleBox from '../ExampleBox';
 
 interface Level1ObjetivoProps {
-  data: ObjetivoModule;
+  data: PromptProject['modules']['objetivo'];
   onUpdate: (field: keyof ObjetivoModule, value: string) => void;
   onNext: () => void;
   onImprove: (field: keyof ObjetivoModule, value: string) => void;

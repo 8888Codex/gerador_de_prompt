@@ -27,13 +27,13 @@ export const usePromptProject = () => {
   const [project, setProject] = useState<PromptProject>(initialProjectState);
 
   // ... (funções existentes: updateObjetivoField, updatePersonaField, etc.)
-  const updateObjetivoField = (field: keyof ObjetivoModule, value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, objetivo: { ...prev.modules.objetivo, [field]: value } } }));
-  const updatePersonaField = (field: keyof PersonaModule, value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, persona: { ...prev.modules.persona, [field]: value } } }));
+  const updateObjetivoField = (field: keyof PromptProject['modules']['objetivo'], value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, objetivo: { ...prev.modules.objetivo, [field]: value } } }));
+  const updatePersonaField = (field: keyof PromptProject['modules']['persona'], value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, persona: { ...prev.modules.persona, [field]: value } } }));
   const addVariavel = () => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: [...prev.modules.variaveis.items, { id: new Date().toISOString(), key: '', description: '' }] } } }));
   const updateVariavel = (id: string, field: 'key' | 'description', value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.map(item => item.id === id ? { ...item, [field]: value } : item) } } }));
   const removeVariavel = (id: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.filter(item => item.id !== id) } } }));
-  const updateAnatomiaField = (field: keyof AnatomiaModule, value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, anatomia: { ...prev.modules.anatomia, [field]: value } } }));
-  const updateRestricoesField = (field: keyof RestricoesModule, value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, restricoes: { ...prev.modules.restricoes, [field]: value } } }));
+  const updateAnatomiaField = (field: keyof PromptProject['modules']['anatomia'], value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, anatomia: { ...prev.modules.anatomia, [field]: value } } }));
+  const updateRestricoesField = (field: keyof PromptProject['modules']['restricoes'], value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, restricoes: { ...prev.modules.restricoes, [field]: value } } }));
   const addFluxo = () => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: [...prev.modules.fluxos.items, { id: new Date().toISOString(), nome: '', passos: '' }] } } }));
   const updateFluxo = (id: string, field: 'nome' | 'passos', value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.map(item => item.id === id ? { ...item, [field]: value } : item) } } }));
   const removeFluxo = (id: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.filter(item => item.id !== id) } } }));

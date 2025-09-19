@@ -13,13 +13,13 @@ import Level8Preview from './levels/Level8Preview';
 
 interface LevelContentProps {
   project: PromptProject;
-  onUpdateObjetivo: (field: keyof PromptProject['modules']['objetivo'], value: string) => void;
+  onUpdateObjetivo: (field: keyof PromptProject['modules']['objetivo'], value: any) => void;
   onUpdatePersona: (field: keyof PromptProject['modules']['persona'], value: any) => void;
   onAddVariavel: () => void;
   onUpdateVariavel: (id: string, field: 'key' | 'description', value: string) => void;
   onRemoveVariavel: (id: string) => void;
   onUpdateAnatomia: (field: keyof PromptProject['modules']['anatomia'], value: any) => void;
-  onUpdateRestricoes: (field: keyof PromptProject['modules']['restricoes'], value: string) => void;
+  onUpdateRestricoes: (field: keyof PromptProject['modules']['restricoes'], value: any) => void;
   onAddFluxo: () => void;
   onUpdateFluxo: (id: string, field: 'nome' | 'passos', value: string) => void;
   onRemoveFluxo: (id: string) => void;
