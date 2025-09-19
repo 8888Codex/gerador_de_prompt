@@ -2,23 +2,25 @@
 
 import React from 'react';
 import { FerramentasModule } from '../../../types';
-import StyledInput from '../StyledInput';
-import StyledTextarea from '../StyledTextarea';
-import StyledButton from '../../StyledButton';
+import StyledInput from '../../ui/StyledInput';
+import StyledTextarea from '../../ui/StyledTextarea';
+import StyledButton from '../../ui/StyledButton';
 import { PlusCircle, Trash2 } from 'lucide-react';
-import ExampleBox from '../ExampleBox';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level7FerramentasProps {
   data: FerramentasModule;
-  onAdd: () => void;
-  onUpdate: (id: string, field: 'nome' | 'descricao', value: string) => void;
-  onRemove: (id: string) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
   onImprove: (id: string, field: 'descricao', value: string) => void;
 }
 
-const Level7Ferramentas: React.FC<Level7FerramentasProps> = ({ data, onAdd, onUpdate, onRemove, onNext, onImprove }) => {
+const Level7Ferramentas: React.FC<Level7FerramentasProps> = ({ data, dispatch, onNext, onImprove }) => {
   const isComplete = data.items.some(item => item.nome.trim() !== '' && item.descricao.trim() !== '');
+
+  const onAdd = () => dispatch({ type: 'ADD_ITEM', payload: { module: 'ferramentas' } });
+  const onUpdate = (id: string, field: 'nome' | 'descricao', value: string) => dispatch({ type: 'UPDATE_ITEM', payload: { module: 'ferramentas', id, field, value } });
+  const onRemove = (id: string) => dispatch({ type: 'REMOVE_ITEM', payload: { module: 'ferramentas', id } });
 
   return (
     <div className="space-y-8">

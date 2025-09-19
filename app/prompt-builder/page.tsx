@@ -7,23 +7,7 @@ import WavyBackground from '../../components/ui/WavyBackground';
 import { supabase } from '../../src/integrations/supabase/client';
 
 export default function PromptBuilderPage() {
-  const { 
-    project, 
-    updateObjetivoField, 
-    updatePersonaField, 
-    addVariavel,
-    updateVariavel,
-    removeVariavel,
-    updateAnatomiaField,
-    updateRestricoesField,
-    addFluxo,
-    updateFluxo,
-    removeFluxo,
-    addFerramenta,
-    updateFerramenta,
-    removeFerramenta,
-    completeAndAdvanceLevel 
-  } = usePromptProject();
+  const { project, dispatch } = usePromptProject();
 
   const handleImproveText = async (level: number, field: string, value: string, itemId?: string) => {
     try {
@@ -36,33 +20,25 @@ export default function PromptBuilderPage() {
       if (data.improvedText) {
         switch (level) {
           case 1:
-            if (field === 'nomeAssistente' || field === 'missao') {
-              updateObjetivoField(field, data.improvedText);
-            }
+            dispatch({ type: 'UPDATE_FIELD', payload: { module: 'objetivo', field, value: data.improvedText } });
             break;
           case 2:
-            if (field === 'postura' || field === 'tom' || field === 'atitude' || field === 'empatia' || field === 'linguagemModos') {
-              updatePersonaField(field, data.improvedText);
-            }
+            dispatch({ type: 'UPDATE_FIELD', payload: { module: 'persona', field, value: data.improvedText } });
             break;
           case 4:
-            if (field === 'regraCustomizada') {
-              updateAnatomiaField(field, data.improvedText);
-            }
+            dispatch({ type: 'UPDATE_FIELD', payload: { module: 'anatomia', field, value: data.improvedText } });
             break;
           case 5:
-            if (field === 'regrasProibidas' || field === 'regrasObrigatorias') {
-              updateRestricoesField(field, data.improvedText);
-            }
+            dispatch({ type: 'UPDATE_FIELD', payload: { module: 'restricoes', field, value: data.improvedText } });
             break;
           case 6:
-            if (itemId && field === 'passos') {
-              updateFluxo(itemId, field, data.improvedText);
+            if (itemId) {
+              dispatch({ type: 'UPDATE_ITEM', payload: { module: 'fluxos', id: itemId, field, value: data.improvedText } });
             }
             break;
           case 7:
-            if (itemId && field === 'descricao') {
-              updateFerramenta(itemId, field, data.improvedText);
+            if (itemId) {
+              dispatch({ type: 'UPDATE_ITEM', payload: { module: 'ferramentas', id: itemId, field, value: data.improvedText } });
             }
             break;
         }
@@ -88,20 +64,7 @@ export default function PromptBuilderPage() {
           <section className="w-full max-w-4xl">
             <LevelContent 
               project={project}
-              onUpdateObjetivo={updateObjetivoField}
-              onUpdatePersona={updatePersonaField}
-              onAddVariavel={addVariavel}
-              onUpdateVariavel={updateVariavel}
-              onRemoveVariavel={removeVariavel}
-              onUpdateAnatomia={updateAnatomiaField}
-              onUpdateRestricoes={updateRestricoesField}
-              onAddFluxo={addFluxo}
-              onUpdateFluxo={updateFluxo}
-              onRemoveFluxo={removeFluxo}
-              onAddFerramenta={addFerramenta}
-              onUpdateFerramenta={updateFerramenta}
-              onRemoveFerramenta={removeFerramenta}
-              onNextLevel={completeAndAdvanceLevel}
+              dispatch={dispatch}
               onImproveText={handleImproveText}
             />
           </section>

@@ -2,19 +2,23 @@
 
 import React from 'react';
 import { PersonaModule, PromptProject } from '../../../types';
-import StyledTextarea from '../StyledTextarea';
-import StyledButton from '../../StyledButton';
-import ExampleBox from '../ExampleBox';
+import StyledTextarea from '../../ui/StyledTextarea';
+import StyledButton from '../../ui/StyledButton';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level2PersonaProps {
   data: PromptProject['modules']['persona'];
-  onUpdate: (field: keyof PromptProject['modules']['persona'], value: any) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
   onImprove: (field: keyof PersonaModule, value: string) => void;
 }
 
-const Level2Persona: React.FC<Level2PersonaProps> = ({ data, onUpdate, onNext, onImprove }) => {
+const Level2Persona: React.FC<Level2PersonaProps> = ({ data, dispatch, onNext, onImprove }) => {
   const isComplete = data.postura.trim() !== '' && data.tom.trim() !== '' && data.atitude.trim() !== '' && data.empatia.trim() !== '';
+
+  const onUpdate = (field: keyof PersonaModule, value: any) => {
+    dispatch({ type: 'UPDATE_FIELD', payload: { module: 'persona', field, value } });
+  };
 
   const genderOptions: { value: 'masculino' | 'feminino' | 'neutro'; label: string }[] = [
     { value: 'masculino', label: 'Masculino' },

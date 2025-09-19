@@ -2,23 +2,25 @@
 
 import React from 'react';
 import { FluxosModule } from '../../../types';
-import StyledInput from '../StyledInput';
-import StyledTextarea from '../StyledTextarea';
-import StyledButton from '../../StyledButton';
+import StyledInput from '../../ui/StyledInput';
+import StyledTextarea from '../../ui/StyledTextarea';
+import StyledButton from '../../ui/StyledButton';
 import { PlusCircle, Trash2 } from 'lucide-react';
-import ExampleBox from '../ExampleBox';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level6FluxosProps {
   data: FluxosModule;
-  onAdd: () => void;
-  onUpdate: (id: string, field: 'nome' | 'passos', value: string) => void;
-  onRemove: (id: string) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
   onImprove: (id: string, field: 'passos', value: string) => void;
 }
 
-const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, onAdd, onUpdate, onRemove, onNext, onImprove }) => {
+const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, dispatch, onNext, onImprove }) => {
   const isComplete = data.items.some(item => item.nome.trim() !== '' && item.passos.trim() !== '');
+
+  const onAdd = () => dispatch({ type: 'ADD_ITEM', payload: { module: 'fluxos' } });
+  const onUpdate = (id: string, field: 'nome' | 'passos', value: string) => dispatch({ type: 'UPDATE_ITEM', payload: { module: 'fluxos', id, field, value } });
+  const onRemove = (id: string) => dispatch({ type: 'REMOVE_ITEM', payload: { module: 'fluxos', id } });
 
   return (
     <div className="space-y-8">

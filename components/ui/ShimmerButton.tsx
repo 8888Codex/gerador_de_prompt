@@ -3,13 +3,13 @@
 import React from 'react';
 
 interface ShimmerButtonProps {
-  title: string;
+  children: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
   className?: string;
 }
 
-const ShimmerButton: React.FC<ShimmerButtonProps> = ({ title, onClick, disabled = false, className = '' }) => {
+const ShimmerButton: React.FC<ShimmerButtonProps> = ({ children, onClick, disabled = false, className = '' }) => {
   return (
     <button
       onClick={onClick}
@@ -24,7 +24,7 @@ const ShimmerButton: React.FC<ShimmerButtonProps> = ({ title, onClick, disabled 
     >
       <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#60a5fa_0%,#3b82f6_50%,#60a5fa_100%)]" />
       <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md bg-gray-900 px-8 py-1 text-lg font-bold text-white backdrop-blur-3xl">
-        {title}
+        {children}
       </span>
     </button>
   );

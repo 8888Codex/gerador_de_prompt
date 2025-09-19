@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from 'react';
-import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule, RestricoesModule, FluxosModule, Fluxo, FerramentasModule } from '../types';
+import { useReducer } from 'react';
+import { PromptProject, MessageSize } from '../types';
 import { LEVELS } from '../data/levels';
 
-const initialProjectState: PromptProject = {
+type Action =
+  | { type: 'UPDATE_FIELD'; payload: { module: keyof PromptProject['modules']; field: string; value: any } }
+  | { type: 'ADD_ITEM'; payload: { module: 'variaveis' | 'fluxos' | 'ferramentas' } }
+  | { type: 'UPDATE_ITEM'; payload: { module: 'variaveis' | 'fluxos' | 'ferramentas'; id: string; field: string; value: string } }
+  | { type: 'REMOVE_ITEM'; payload: { module: 'variaveis' | 'fluxos' | 'ferramentas'; id: string } }
+  | { type: 'COMPLETE_AND_ADVANCE_LEVEL' };
+
+const initialState: PromptProject = {
   id: new Date().toISOString(),
   name: "Novo Projeto de Prompt",
   currentLevel: 1,
@@ -23,150 +30,134 @@ const initialProjectState: PromptProject = {
   },
 };
 
-export const usePromptProject = () => {
-  const [project, setProject] = useState<PromptProject>(initialProjectState);
-
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo objetivo, incluindo ModuleProgress
-  const updateObjetivoField = (field: keyof PromptProject['modules']['objetivo'], value: any) => {
-    setProject(prev => ({ 
-      ...prev, 
-      modules: { 
-        ...prev.modules, 
-        objetivo: { ...prev.modules.objetivo, [field]: value } 
-      } 
-    }));
-  };
-
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo persona, incluindo ModuleProgress
-  const updatePersonaField = (field: keyof PromptProject['modules']['persona'], value: any) => {
-    setProject(prev => ({ 
-      ...prev, 
-      modules: { 
-        ...prev.modules, 
-        persona: { ...prev.modules.persona, [field]: value } 
-      } 
-    }));
-  };
-
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo anatomia, incluindo ModuleProgress
-  const updateAnatomiaField = (field: keyof PromptProject['modules']['anatomia'], value: any) => {
-    setProject(prev => ({ 
-      ...prev, 
-      modules: { 
-        ...prev.modules, 
-        anatomia: { ...prev.modules.anatomia, [field]: value } 
-      } 
-    }));
-  };
-
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo restricoes, incluindo ModuleProgress
-  const updateRestricoesField = (field: keyof PromptProject['modules']['restricoes'], value: any) => {
-    setProject(prev => ({ 
-      ...prev, 
-      modules: { 
-        ...prev.modules, 
-        restricoes: { ...prev.modules.restricoes, [field]: value } 
-      } 
-    }));
-  };
-
-  const addVariavel = () => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: [...prev.modules.variaveis.items, { id: new Date().toISOString(), key: '', description: '' }] } } }));
-  const updateVariavel = (id: string, field: 'key' | 'description', value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.map(item => item.id === id ? { ...item, [field]: value } : item) } } }));
-  const removeVariavel = (id: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.filter(item => item.id !== id) } } }));
-  
-  const addFluxo = () => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: [...prev.modules.fluxos.items, { id: new Date().toISOString(), nome: '', passos: '' }] } } }));
-  const updateFluxo = (id: string, field: 'nome' | 'passos', value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.map(item => item.id === id ? { ...item, [field]: value } : item) } } }));
-  const removeFluxo = (id: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.filter(item => item.id !== id) } } }));
-
-  const addFerramenta = () => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, ferramentas: { ...prev.modules.ferramentas, items: [...prev.modules.ferramentas.items, { id: new Date().toISOString(), nome: '', descricao: '' }] } }
-    }));
-  };
-
-  const updateFerramenta = (id: string, field: 'nome' | 'descricao', value: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, ferramentas: { ...prev.modules.ferramentas, items: prev.modules.ferramentas.items.map(item => item.id === id ? { ...item, [field]: value } : item) } }
-    }));
-  };
-
-  const removeFerramenta = (id: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, ferramentas: { ...prev.modules.ferramentas, items: prev.modules.ferramentas.items.filter(item => item.id !== id) } }
-    }));
-  };
-
-  const completeAndAdvanceLevel = () => {
-    const currentLevelData = LEVELS.find(l => l.id === project.currentLevel);
-    if (!currentLevelData) return;
-
-    let score = 0;
-    let canAdvance = false;
-
-    switch (project.currentLevel) {
-      case 1:
-        canAdvance = project.modules.objetivo.nomeAssistente.trim() !== '' && project.modules.objetivo.missao.trim().length >= 20;
-        score = canAdvance ? 100 : 50;
-        break;
-      case 2:
-        canAdvance = project.modules.persona.postura.trim() !== '' && project.modules.persona.tom.trim() !== '';
-        score = canAdvance ? 100 : 50;
-        break;
-      case 3:
-        const validVars = project.modules.variaveis.items.filter(i => i.key.trim() !== '' && i.description.trim() !== '').length;
-        canAdvance = validVars >= 2;
-        score = validVars >= 2 ? 100 : (validVars === 1 ? 50 : 0);
-        break;
-      case 4:
-        const { tamanhoMensagem, usarEmojis, usarMarkdown, regraCustomizada } = project.modules.anatomia;
-        canAdvance = tamanhoMensagem !== null && (usarEmojis || usarMarkdown || regraCustomizada.trim() !== '');
-        score = canAdvance ? 100 : 50;
-        break;
-      case 5:
-        canAdvance = project.modules.restricoes.regrasProibidas.trim() !== '';
-        score = canAdvance ? 100 : 0;
-        break;
-      case 6:
-        const validFlows = project.modules.fluxos.items.filter(i => i.nome.trim() !== '' && i.passos.trim() !== '').length;
-        canAdvance = validFlows >= 1;
-        score = canAdvance ? 100 : 0;
-        break;
-      case 7:
-        const validTools = project.modules.ferramentas.items.filter(i => i.nome.trim() !== '' && i.descricao.trim() !== '').length;
-        canAdvance = validTools >= 1;
-        score = canAdvance ? 100 : 0;
-        break;
-      case 8:
-        canAdvance = true; // Nível final, sempre pode "avançar" (concluir)
-        score = 100;
-        break;
+const promptProjectReducer = (state: PromptProject, action: Action): PromptProject => {
+  switch (action.type) {
+    case 'UPDATE_FIELD': {
+      const { module, field, value } = action.payload;
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
+          [module]: { ...state.modules[module], [field]: value },
+        },
+      };
     }
+    case 'ADD_ITEM': {
+      const { module } = action.payload;
+      const newItem = module === 'variaveis' 
+        ? { id: new Date().toISOString(), key: '', description: '' }
+        : { id: new Date().toISOString(), nome: '', [module === 'fluxos' ? 'passos' : 'descricao']: '' };
+      
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
+          [module]: {
+            ...state.modules[module],
+            items: [...state.modules[module].items, newItem],
+          },
+        },
+      };
+    }
+    case 'UPDATE_ITEM': {
+      const { module, id, field, value } = action.payload;
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
+          [module]: {
+            ...state.modules[module],
+            items: state.modules[module].items.map(item =>
+              item.id === id ? { ...item, [field]: value } : item
+            ),
+          },
+        },
+      };
+    }
+    case 'REMOVE_ITEM': {
+      const { module, id } = action.payload;
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
+          [module]: {
+            ...state.modules[module],
+            items: state.modules[module].items.filter(item => item.id !== id),
+          },
+        },
+      };
+    }
+    case 'COMPLETE_AND_ADVANCE_LEVEL': {
+      const currentLevelData = LEVELS.find(l => l.id === state.currentLevel);
+      if (!currentLevelData) return state;
 
-    if (canAdvance || score >= currentLevelData.minScore) {
-      setProject(prev => {
-        const nextLevel = prev.currentLevel + 1;
-        const nextModuleKey = Object.keys(prev.modules)[nextLevel - 2] as keyof typeof prev.modules;
+      let score = 0;
+      let canAdvance = false;
+
+      switch (state.currentLevel) {
+        case 1:
+          canAdvance = state.modules.objetivo.nomeAssistente.trim() !== '' && state.modules.objetivo.missao.trim().length >= 20;
+          score = canAdvance ? 100 : 50;
+          break;
+        case 2:
+          canAdvance = state.modules.persona.postura.trim() !== '' && state.modules.persona.tom.trim() !== '';
+          score = canAdvance ? 100 : 50;
+          break;
+        case 3:
+          const validVars = state.modules.variaveis.items.filter(i => i.key.trim() !== '' && i.description.trim() !== '').length;
+          canAdvance = validVars >= 2;
+          score = validVars >= 2 ? 100 : (validVars === 1 ? 50 : 0);
+          break;
+        case 4:
+          const { tamanhoMensagem, usarEmojis, usarMarkdown, regraCustomizada } = state.modules.anatomia;
+          canAdvance = tamanhoMensagem !== null && (usarEmojis || usarMarkdown || regraCustomizada.trim() !== '');
+          score = canAdvance ? 100 : 50;
+          break;
+        case 5:
+          canAdvance = state.modules.restricoes.regrasProibidas.trim() !== '';
+          score = canAdvance ? 100 : 0;
+          break;
+        case 6:
+          const validFlows = state.modules.fluxos.items.filter(i => i.nome.trim() !== '' && i.passos.trim() !== '').length;
+          canAdvance = validFlows >= 1;
+          score = canAdvance ? 100 : 0;
+          break;
+        case 7:
+          const validTools = state.modules.ferramentas.items.filter(i => i.nome.trim() !== '' && i.descricao.trim() !== '').length;
+          canAdvance = validTools >= 1;
+          score = canAdvance ? 100 : 0;
+          break;
+        case 8:
+          canAdvance = true;
+          score = 100;
+          break;
+      }
+
+      if (canAdvance || score >= currentLevelData.minScore) {
+        const nextLevel = state.currentLevel + 1;
+        const nextModuleKey = Object.keys(state.modules)[nextLevel - 2] as keyof typeof state.modules;
         
         return {
-          ...prev,
-          currentLevel: nextLevel > LEVELS.length ? prev.currentLevel : nextLevel,
-          completedLevels: [...new Set([...prev.completedLevels, prev.currentLevel])],
-          levelScores: { ...prev.levelScores, [prev.currentLevel]: score },
+          ...state,
+          currentLevel: nextLevel > LEVELS.length ? state.currentLevel : nextLevel,
+          completedLevels: [...new Set([...state.completedLevels, state.currentLevel])],
+          levelScores: { ...state.levelScores, [state.currentLevel]: score },
           modules: {
-            ...prev.modules,
-            ...(nextModuleKey && nextLevel <= Object.keys(prev.modules).length + 1 && { 
-              [nextModuleKey]: { ...prev.modules[nextModuleKey], isUnlocked: true }
+            ...state.modules,
+            ...(nextModuleKey && nextLevel <= Object.keys(state.modules).length + 1 && { 
+              [nextModuleKey]: { ...state.modules[nextModuleKey], isUnlocked: true }
             })
           }
         };
-      });
-    } else {
-      console.log(`Validação falhou para o nível ${project.currentLevel}. Score: ${score}`);
+      }
+      return state;
     }
-  };
+    default:
+      return state;
+  }
+};
 
-  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, updateRestricoesField, addFluxo, updateFluxo, removeFluxo, addFerramenta, updateFerramenta, removeFerramenta, completeAndAdvanceLevel };
+export const usePromptProject = () => {
+  const [project, dispatch] = useReducer(promptProjectReducer, initialState);
+  return { project, dispatch };
 };

@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import ShimmerButton from '../components/ShimmerButton';
-import LoginModal from '../components/LoginModal';
+import ShimmerButton from '../components/ui/ShimmerButton';
+import LoginModal from '../components/auth/LoginModal';
 import WavyBackground from '../components/ui/WavyBackground';
 
 export default function WelcomeScreen() {
@@ -33,9 +33,10 @@ export default function WelcomeScreen() {
           </p>
           <div className="mt-10">
             <ShimmerButton 
-              title="Começar agora"
               onClick={() => setIsModalOpen(true)}
-            />
+            >
+              Começar agora
+            </ShimmerButton>
           </div>
         </div>
       </main>

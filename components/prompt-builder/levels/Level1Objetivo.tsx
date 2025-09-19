@@ -2,19 +2,23 @@
 
 import React from 'react';
 import { ObjetivoModule, PromptProject } from '../../../types';
-import StyledTextarea from '../StyledTextarea';
-import StyledButton from '../../StyledButton';
-import ExampleBox from '../ExampleBox';
+import StyledTextarea from '../../ui/StyledTextarea';
+import StyledButton from '../../ui/StyledButton';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level1ObjetivoProps {
   data: PromptProject['modules']['objetivo'];
-  onUpdate: (field: keyof PromptProject['modules']['objetivo'], value: any) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
   onImprove: (field: keyof ObjetivoModule, value: string) => void;
 }
 
-const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext, onImprove }) => {
+const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, dispatch, onNext, onImprove }) => {
   const isComplete = data.nomeAssistente.trim() !== '' && data.missao.trim().length >= 20;
+
+  const onUpdate = (field: keyof ObjetivoModule, value: string) => {
+    dispatch({ type: 'UPDATE_FIELD', payload: { module: 'objetivo', field, value } });
+  };
 
   return (
     <div className="space-y-8">

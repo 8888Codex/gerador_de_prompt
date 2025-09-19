@@ -1,20 +1,24 @@
 "use client";
 
 import React from 'react';
-import { RestricoesModule, PromptProject, ModuleProgress } from '../../../types';
-import StyledTextarea from '../StyledTextarea';
-import StyledButton from '../../StyledButton';
-import ExampleBox from '../ExampleBox';
+import { RestricoesModule, PromptProject } from '../../../types';
+import StyledTextarea from '../../ui/StyledTextarea';
+import StyledButton from '../../ui/StyledButton';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level5RestricoesProps {
   data: PromptProject['modules']['restricoes'];
-  onUpdate: (field: keyof PromptProject['modules']['restricoes'], value: any) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
   onImprove: (field: keyof RestricoesModule, value: string) => void;
 }
 
-const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, onUpdate, onNext, onImprove }) => {
+const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, dispatch, onNext, onImprove }) => {
   const isComplete = data.regrasProibidas.trim() !== '';
+
+  const onUpdate = (field: keyof RestricoesModule, value: string) => {
+    dispatch({ type: 'UPDATE_FIELD', payload: { module: 'restricoes', field, value } });
+  };
 
   return (
     <div className="space-y-8">

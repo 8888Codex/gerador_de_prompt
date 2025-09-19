@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { PromptProject } from '../../../types';
-import StyledButton from '../../StyledButton';
+import StyledButton from '../../ui/StyledButton';
 import { Clipboard, Download } from 'lucide-react';
 
 interface Level8PreviewProps {

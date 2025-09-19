@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import LoginPage from './ui/gaming-login';
+import AuthForm from './AuthForm';
 import { X } from 'lucide-react';
 
 interface LoginModalProps {
@@ -16,7 +16,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/80 backdrop-blur-sm">
       <div className="relative z-20 w-full max-w-md animate-fadeIn">
-        <LoginPage.LoginForm onSuccess={onLoginSuccess} />
+        <AuthForm onSuccess={onLoginSuccess} />
       </div>
       
       <button

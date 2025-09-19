@@ -1,23 +1,25 @@
 "use client";
 
 import React from 'react';
-import { VariaveisModule, Variavel } from '../../../types';
-import StyledInput from '../StyledInput';
-import StyledButton from '../../StyledButton';
+import { VariaveisModule } from '../../../types';
+import StyledInput from '../../ui/StyledInput';
+import StyledButton from '../../ui/StyledButton';
 import { PlusCircle, Trash2 } from 'lucide-react';
-import ExampleBox from '../ExampleBox';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level3VariaveisProps {
   data: VariaveisModule;
-  onAdd: () => void;
-  onUpdate: (id: string, field: 'key' | 'description', value: string) => void;
-  onRemove: (id: string) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
 }
 
-const Level3Variaveis: React.FC<Level3VariaveisProps> = ({ data, onAdd, onUpdate, onRemove, onNext }) => {
+const Level3Variaveis: React.FC<Level3VariaveisProps> = ({ data, dispatch, onNext }) => {
   const validItemsCount = data.items.filter(item => item.key.trim() !== '' && item.description.trim() !== '').length;
   const isComplete = validItemsCount >= 2;
+
+  const onAdd = () => dispatch({ type: 'ADD_ITEM', payload: { module: 'variaveis' } });
+  const onUpdate = (id: string, field: 'key' | 'description', value: string) => dispatch({ type: 'UPDATE_ITEM', payload: { module: 'variaveis', id, field, value } });
+  const onRemove = (id: string) => dispatch({ type: 'REMOVE_ITEM', payload: { module: 'variaveis', id } });
 
   return (
     <div className="space-y-8">

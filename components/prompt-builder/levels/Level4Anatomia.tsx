@@ -1,20 +1,24 @@
 "use client";
 
 import React from 'react';
-import { AnatomiaModule, MessageSize, PromptProject, ModuleProgress } from '../../../types';
-import StyledTextarea from '../StyledTextarea';
-import StyledButton from '../../StyledButton';
-import ExampleBox from '../ExampleBox';
+import { AnatomiaModule, MessageSize, PromptProject } from '../../../types';
+import StyledTextarea from '../../ui/StyledTextarea';
+import StyledButton from '../../ui/StyledButton';
+import ExampleBox from '../../ui/ExampleBox';
 
 interface Level4AnatomiaProps {
   data: PromptProject['modules']['anatomia'];
-  onUpdate: (field: keyof PromptProject['modules']['anatomia'], value: any) => void;
+  dispatch: React.Dispatch<any>;
   onNext: () => void;
   onImprove: (field: keyof AnatomiaModule, value: string) => void;
 }
 
-const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, onUpdate, onNext, onImprove }) => {
+const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, dispatch, onNext, onImprove }) => {
   const isComplete = data.tamanhoMensagem !== null && (data.usarEmojis || data.usarMarkdown || data.regraCustomizada.trim() !== '');
+
+  const onUpdate = (field: keyof AnatomiaModule, value: any) => {
+    dispatch({ type: 'UPDATE_FIELD', payload: { module: 'anatomia', field, value } });
+  };
 
   const sizeOptions: { value: MessageSize; label: string; description: string }[] = [
     { value: 'curta', label: 'Curta', description: 'Respostas diretas e concisas.' },
