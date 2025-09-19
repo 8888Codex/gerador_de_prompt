@@ -1,14 +1,14 @@
 "use client";
 
 import React from 'react';
-import { RestricoesModule, PromptProject } from '../../../types';
+import { RestricoesModule, PromptProject, ModuleProgress } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
 import ExampleBox from '../ExampleBox';
 
 interface Level5RestricoesProps {
   data: PromptProject['modules']['restricoes'];
-  onUpdate: (field: keyof RestricoesModule, value: string) => void;
+  onUpdate: (field: keyof (RestricoesModule & ModuleProgress), value: string) => void;
   onNext: () => void;
   onImprove: (field: keyof RestricoesModule, value: string) => void;
 }
