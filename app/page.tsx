@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import StyledButton from '../components/StyledButton';
 import LoginModal from '../components/LoginModal';
+import AnimatedGradientBackground from '../components/ui/AnimatedGradientBackground';
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -16,8 +17,8 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <>
-      <main className="flex min-h-screen flex-col items-center justify-center p-6 text-center z-10 bg-gray-900">
+    <AnimatedGradientBackground>
+      <main className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
         <div className="max-w-2xl">
           <Image
             src="/Codex-Logo.png"
@@ -43,6 +44,6 @@ export default function WelcomeScreen() {
         onClose={() => setIsModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
-    </>
+    </AnimatedGradientBackground>
   );
 }
