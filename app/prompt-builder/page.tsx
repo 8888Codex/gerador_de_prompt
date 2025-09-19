@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePromptProject } from '../../hooks/usePromptProject';
 import LevelContent from '../../components/prompt-builder/LevelContent';
-import AnimatedGradientBackground from '../../components/AnimatedGradientBackground';
+import WavyBackground from '../../components/ui/blue-meshy-background';
 import { supabase } from '../../src/integrations/supabase/client';
 import { ObjetivoModule, PersonaModule, AnatomiaModule, RestricoesModule } from '../../types';
 
@@ -66,7 +66,7 @@ export default function PromptBuilderPage() {
   };
 
   return (
-    <AnimatedGradientBackground>
+    <WavyBackground>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <header className="text-center mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-white">
@@ -74,7 +74,7 @@ export default function PromptBuilderPage() {
           </h1>
           <p className="mt-2 text-lg text-gray-300">
             Siga os níveis para construir um prompt poderoso e eficaz.
-          </p>
+          p>
         </header>
 
         <main className="flex justify-center items-start py-10">
@@ -100,6 +100,6 @@ export default function PromptBuilderPage() {
           </section>
         </main>
       </div>
-    </AnimatedGradientBackground>
+    </WavyBackground>
   );
 }
