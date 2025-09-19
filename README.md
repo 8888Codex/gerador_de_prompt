@@ -1,7 +1,10 @@
-# Dyad React Native (Expo) Template
+# Gerador de Prompt com IA (Next.js)
 
-- `pnpm dev` / `npm run dev`: start Expo (press `w` to open **web**)
-- `pnpm web`: start straight into web preview (used by Dyad iframe)
-- `pnpm ios` / `pnpm android`: native runs
+Este projeto é uma aplicação Next.js para construir prompts de IA.
 
-This template uses `react-native-web` so Dyad can preview it in the browser.
+## Comandos
+
+- `npm run dev`: Inicia o servidor de desenvolvimento.
+- `npm run build`: Compila a aplicação para produção.
+- `npm run start`: Inicia o servidor de produção.
+- `npm run lint`: Executa o linter para verificar a qualidade do código.
