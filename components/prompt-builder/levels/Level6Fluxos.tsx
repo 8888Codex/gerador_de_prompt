@@ -71,7 +71,7 @@ const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, onAdd, onUpdate, onRe
         <p>Pense nos principais cenários de conversa. O que o usuário pode querer? Crie um fluxo para cada um.</p>
         <ul>
           <li><strong>Nome do Fluxo:</strong> <code>Consulta de Status de Pedido</code></li>
-          <li><strong>Passos:</strong> <code>1. Peço o NUMERO_DO_PEDIDO. 2. Verifico o status no sistema. 3. Informo o status atual (Ex: 'Em preparação', 'Enviado'). 4. Pergunto se posso ajudar com mais alguma coisa.</code></li>
+          <li><strong>Passos:</strong> <code>1. Peço o NUMERO_DO_PEDIDO. 2. Verifico o status no sistema. 3. Informo o status atual (Ex: &apos;Em preparação&apos;, &apos;Enviado&apos;). 4. Pergunto se posso ajudar com mais alguma coisa.</code></li>
         </ul>
       </ExampleBox>
 
