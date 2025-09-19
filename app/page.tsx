@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import StyledButton from '../components/StyledButton';
+import ShimmerButton from '../components/ShimmerButton';
 import LoginModal from '../components/LoginModal';
 import WavyBackground from '../components/ui/WavyBackground';
 
@@ -32,7 +32,7 @@ export default function WelcomeScreen() {
             PROMPT COM IA
           </p>
           <div className="mt-10">
-            <StyledButton 
+            <ShimmerButton 
               title="Começar agora"
               onClick={() => setIsModalOpen(true)}
             />
