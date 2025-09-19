@@ -1,14 +1,45 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts"
 
-// Headers de CORS para permitir que nosso app chame esta função
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Lógica da função
+// Função para gerar texto aprimorado com base na entrada do usuário
+const generateImprovedText = (field: string, value: string): string => {
+  // Se o campo estiver vazio, retorna uma sugestão padrão
+  if (!value || value.trim() === '') {
+    switch (field) {
+      case 'nomeAssistente': return "Assistente de Engajamento Proativo";
+      case 'missao': return "Analisar as necessidades do usuário para fornecer soluções precisas e eficientes.";
+      case 'postura': return "Um guia prestativo e paciente, sempre pronto para ajudar.";
+      case 'tom': return "Encorajador e amigável, usando uma linguagem clara e acessível.";
+      default: return `Sugestão de IA para ${field}...`;
+    }
+  }
+
+  // Adiciona prefixos/sufixos para aprimorar o texto do usuário
+  switch (field) {
+    case 'nomeAssistente':
+      return `${value}, Especialista em Soluções Estratégicas`;
+    case 'missao':
+      return `Minha missão principal é ${value.toLowerCase()}, visando sempre a máxima eficiência, clareza e a satisfação completa do usuário em cada interação.`;
+    case 'postura':
+      return `Serei um ${value.toLowerCase()}, demonstrando proatividade, conhecimento aprofundado e uma abordagem consultiva para resolver problemas.`;
+    case 'tom':
+      return `Meu tom será consistentemente ${value.toLowerCase()}, estabelecendo uma comunicação clara, objetiva e empática para construir confiança.`;
+    case 'atitude':
+      return `Manterei uma atitude de ${value.toLowerCase()}, focado em encontrar a melhor resposta e nunca desistindo de um desafio.`;
+    case 'empatia':
+        return `Demonstrarei empatia ao ${value.toLowerCase()}, reconhecendo as frustrações do usuário e validando seus sentimentos antes de oferecer uma solução.`;
+    case 'linguagemModos':
+        return `Além dos modos ${value.toLowerCase()}, serei capaz de me adaptar a contextos formais, técnicos e inspiradores conforme a necessidade.`;
+    default:
+      return `[Versão Aprimorada por IA] ${value}`;
+  }
+}
+
 serve(async (req) => {
-  // O Supabase exige um tratamento para requisições OPTIONS (pre-flight)
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -16,29 +47,8 @@ serve(async (req) => {
   try {
     const { field, value } = await req.json()
 
-    // --- LÓGICA DA IA (SIMULADA) ---
-    // Aqui é onde você faria a chamada para uma API de IA como OpenAI, Anthropic, etc.
-    // Por enquanto, vamos retornar um texto aprimorado de exemplo.
-    let improvedText = `[IA] ${value}`;
-    
-    // Nível 1
-    if (field === 'nomeAssistente') {
-      improvedText = "Assistente de Engajamento Proativo";
-    } else if (field === 'missao') {
-      improvedText = "Minha missão é analisar as necessidades do usuário em tempo real para fornecer as soluções mais precisas e eficientes, antecipando perguntas e resolvendo problemas antes mesmo que eles se tornem obstáculos.";
-    }
-    // Nível 2
-    else if (field === 'postura') {
-      improvedText = "Serei um guia prestativo e paciente, sempre pronto para ajudar com uma atitude positiva e proativa.";
-    } else if (field === 'tom') {
-      improvedText = "Meu tom será consistentemente encorajador e amigável, usando uma linguagem clara, acessível e evitando jargões técnicos.";
-    } else if (field === 'atitude') {
-      improvedText = "Manterei uma atitude de solucionador de problemas, focado em encontrar a melhor resposta e nunca desistindo de um desafio.";
-    } else if (field === 'empatia') {
-      improvedText = "Demonstrarei empatia reconhecendo as frustrações do usuário e validando seus sentimentos antes de oferecer uma solução.";
-    } else if (field === 'linguagemModos') {
-      improvedText = "Formal, técnico, casual, divertido, inspirador";
-    }
+    // --- LÓGICA DA IA (SIMULADA E MELHORADA) ---
+    const improvedText = generateImprovedText(field, value);
     // --- FIM DA LÓGICA DA IA ---
 
     return new Response(
