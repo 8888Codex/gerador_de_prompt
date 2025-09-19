@@ -1,54 +1,30 @@
+"use client";
+
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
 interface StyledButtonProps {
   title: string;
-  onPress: () => void;
+  onClick: () => void;
   disabled?: boolean;
+  className?: string;
 }
 
-const StyledButton: React.FC<StyledButtonProps> = ({ title, onPress, disabled = false }) => {
-  const buttonStyle: ViewStyle[] = [styles.button, styles.primaryButton];
-  const textStyle: TextStyle[] = [styles.text, styles.primaryText];
+const StyledButton: React.FC<StyledButtonProps> = ({ title, onClick, disabled = false, className = '' }) => {
+  const baseClasses = "px-8 py-3.5 rounded-lg font-bold text-base transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300";
+  const enabledClasses = "bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl";
+  const disabledClasses = "bg-gray-400 text-gray-200 cursor-not-allowed";
 
-  if (disabled) {
-    buttonStyle.push(styles.disabledButton);
-    textStyle.push(styles.disabledText);
-  }
+  const buttonClasses = `${baseClasses} ${disabled ? disabledClasses : enabledClasses} ${className}`;
 
   return (
-    <TouchableOpacity style={buttonStyle} onPress={onPress} disabled={disabled}>
-      <Text style={textStyle}>{title}</Text>
-    </TouchableOpacity>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={buttonClasses}
+    >
+      {title}
+    </button>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 24,
-    width: '100%',
-  },
-  primaryButton: {
-    backgroundColor: '#3B82F6', // Blue
-  },
-  disabledButton: {
-    backgroundColor: '#9CA3AF', // Gray
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  primaryText: {
-    color: 'white',
-  },
-  disabledText: {
-    color: '#E5E7EB',
-  },
-});
 
 export default StyledButton;
