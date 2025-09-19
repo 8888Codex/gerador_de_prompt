@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule, RestricoesModule } from '../types';
+import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule, RestricoesModule, FluxosModule, Fluxo } from '../types';
 import { LEVELS } from '../data/levels';
 
 const initialProjectState: PromptProject = {
@@ -49,6 +49,12 @@ const initialProjectState: PromptProject = {
     restricoes: {
       regrasProibidas: '',
       regrasObrigatorias: '',
+      isUnlocked: false,
+      isCompleted: false,
+      completionScore: 0,
+    },
+    fluxos: {
+      items: [{ id: 'initial-flow-1', nome: '', passos: '' }],
       isUnlocked: false,
       isCompleted: false,
       completionScore: 0,
@@ -108,6 +114,27 @@ export const usePromptProject = () => {
     }));
   };
 
+  const addFluxo = () => {
+    setProject(prev => ({
+      ...prev,
+      modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: [...prev.modules.fluxos.items, { id: new Date().toISOString(), nome: '', passos: '' }] } }
+    }));
+  };
+
+  const updateFluxo = (id: string, field: 'nome' | 'passos', value: string) => {
+    setProject(prev => ({
+      ...prev,
+      modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.map(item => item.id === id ? { ...item, [field]: value } : item) } }
+    }));
+  };
+
+  const removeFluxo = (id: string) => {
+    setProject(prev => ({
+      ...prev,
+      modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.filter(item => item.id !== id) } }
+    }));
+  };
+
   const completeAndAdvanceLevel = () => {
     const currentLevelData = LEVELS.find(l => l.id === project.currentLevel);
     if (!currentLevelData) return;
@@ -151,6 +178,12 @@ export const usePromptProject = () => {
         if (regrasProibidas.trim() !== '') score = 100;
         canAdvance = score >= currentLevelData.minScore;
         break;
+
+      case 6:
+        const validFlows = project.modules.fluxos.items.filter(item => item.nome.trim() !== '' && item.passos.trim() !== '');
+        if (validFlows.length >= 1) score = 100;
+        canAdvance = score >= currentLevelData.minScore;
+        break;
     }
 
     if (canAdvance) {
@@ -176,5 +209,5 @@ export const usePromptProject = () => {
     }
   };
 
-  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, updateRestricoesField, completeAndAdvanceLevel };
+  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, updateRestricoesField, addFluxo, updateFluxo, removeFluxo, completeAndAdvanceLevel };
 };

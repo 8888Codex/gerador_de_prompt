@@ -52,6 +52,16 @@ export interface RestricoesModule {
   regrasObrigatorias: string;
 }
 
+export interface Fluxo {
+  id: string;
+  nome: string;
+  passos: string;
+}
+
+export interface FluxosModule {
+  items: Fluxo[];
+}
+
 export interface PromptProject {
   id: string;
   name: string;
@@ -67,6 +77,7 @@ export interface PromptProject {
     variaveis: VariaveisModule & ModuleProgress;
     anatomia: AnatomiaModule & ModuleProgress;
     restricoes: RestricoesModule & ModuleProgress;
+    fluxos: FluxosModule & ModuleProgress;
     // Other modules will be added later
   };
 }
