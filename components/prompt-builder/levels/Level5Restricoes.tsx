@@ -10,9 +10,10 @@ interface Level5RestricoesProps {
   data: RestricoesModule;
   onUpdate: (field: keyof RestricoesModule, value: string) => void;
   onNext: () => void;
+  onImprove: (field: keyof RestricoesModule, value: string) => void;
 }
 
-const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, onUpdate, onNext }) => {
+const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, onUpdate, onNext, onImprove }) => {
   const isComplete = data.regrasProibidas.trim() !== '';
 
   return (
@@ -28,12 +29,14 @@ const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, onUpdate, onN
           value={data.regrasProibidas}
           onChange={(e) => onUpdate('regrasProibidas', e.target.value)}
           placeholder="Ex: Nunca prometa descontos. Não use gírias. Não forneça informações de contato pessoais."
+          onImprove={() => onImprove('regrasProibidas', data.regrasProibidas)}
         />
         <StyledTextarea
           label="Regras Obrigatórias (O que o assistente SEMPRE deve fazer - Opcional)"
           value={data.regrasObrigatorias}
           onChange={(e) => onUpdate('regrasObrigatorias', e.target.value)}
           placeholder="Ex: Sempre se apresentar no início da conversa. Sempre tratar o cliente por 'senhor' ou 'senhora'."
+          onImprove={() => onImprove('regrasObrigatorias', data.regrasObrigatorias)}
         />
       </div>
 

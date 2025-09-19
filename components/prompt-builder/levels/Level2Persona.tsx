@@ -14,7 +14,7 @@ interface Level2PersonaProps {
 }
 
 const Level2Persona: React.FC<Level2PersonaProps> = ({ data, onUpdate, onNext, onImprove }) => {
-  const isComplete = data.postura.trim() !== '' && data.tom.trim() !== '';
+  const isComplete = data.postura.trim() !== '' && data.tom.trim() !== '' && data.atitude.trim() !== '' && data.empatia.trim() !== '';
 
   const genderOptions: { value: 'masculino' | 'feminino' | 'neutro'; label: string }[] = [
     { value: 'masculino', label: 'Masculino' },
@@ -44,6 +44,27 @@ const Level2Persona: React.FC<Level2PersonaProps> = ({ data, onUpdate, onNext, o
           placeholder="Ex: Amigável e casual, profissional e direto, inspirador e poético..."
           onImprove={() => onImprove('tom', data.tom)}
         />
+        <StyledTextarea
+          label="Atitude Geral"
+          value={data.atitude}
+          onChange={(e) => onUpdate('atitude', e.target.value)}
+          placeholder="Ex: Proativo e curioso, cauteloso e metódico, otimista e energético..."
+          onImprove={() => onImprove('atitude', data.atitude)}
+        />
+        <StyledTextarea
+          label="Nível de Empatia"
+          value={data.empatia}
+          onChange={(e) => onUpdate('empatia', e.target.value)}
+          placeholder="Ex: Valida os sentimentos do usuário, foca em soluções práticas, demonstra compaixão..."
+          onImprove={() => onImprove('empatia', data.empatia)}
+        />
+        <StyledTextarea
+          label="Modos de Linguagem (Opcional)"
+          value={data.linguagemModos}
+          onChange={(e) => onUpdate('linguagemModos', e.target.value)}
+          placeholder="Ex: Simples e direto, técnico e detalhado, criativo e metafórico..."
+          onImprove={() => onImprove('linguagemModos', data.linguagemModos)}
+        />
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">Gênero Linguístico</label>
           <div className="flex space-x-4">
@@ -69,7 +90,8 @@ const Level2Persona: React.FC<Level2PersonaProps> = ({ data, onUpdate, onNext, o
         <ul>
           <li><strong>Postura:</strong> <code>Sou um especialista paciente e didático.</code></li>
           <li><strong>Tom de Voz:</strong> <code>Uso um tom calmo, profissional e encorajador.</code></li>
-          <li><strong>Gênero:</strong> <code>Neutro, para ser inclusivo com todos.</code></li>
+          <li><strong>Atitude:</strong> <code>Sou proativo e sempre busco a melhor solução.</code></li>
+          <li><strong>Empatia:</strong> <code>Valido os sentimentos do cliente antes de agir.</code></li>
         </ul>
       </ExampleBox>
 

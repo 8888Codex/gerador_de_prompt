@@ -14,9 +14,10 @@ interface Level6FluxosProps {
   onUpdate: (id: string, field: 'nome' | 'passos', value: string) => void;
   onRemove: (id: string) => void;
   onNext: () => void;
+  onImprove: (id: string, field: 'passos', value: string) => void;
 }
 
-const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, onAdd, onUpdate, onRemove, onNext }) => {
+const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, onAdd, onUpdate, onRemove, onNext, onImprove }) => {
   const isComplete = data.items.some(item => item.nome.trim() !== '' && item.passos.trim() !== '');
 
   return (
@@ -50,6 +51,7 @@ const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, onAdd, onUpdate, onRe
               value={item.passos}
               onChange={(e) => onUpdate(item.id, 'passos', e.target.value)}
               placeholder="Descreva os passos. Ex: 1. Saudar o usuário. 2. Perguntar como posso ajudar. 3. Se for sobre o pedido, pedir o NOME_DO_CLIENTE..."
+              onImprove={() => onImprove(item.id, 'passos', item.passos)}
             />
           </div>
         ))}

@@ -14,6 +14,14 @@ const generateImprovedText = (field: string, value: string): string => {
       case 'missao': return "Analisar as necessidades do usuário para fornecer soluções precisas e eficientes.";
       case 'postura': return "Um guia prestativo e paciente, sempre pronto para ajudar.";
       case 'tom': return "Encorajador e amigável, usando uma linguagem clara e acessível.";
+      case 'atitude': return "Proativo, curioso e focado em resolver problemas complexos.";
+      case 'empatia': return "Reconhecer e validar os sentimentos do usuário antes de oferecer soluções.";
+      case 'linguagemModos': return "Capaz de alternar entre linguagem simples, técnica e criativa conforme o contexto.";
+      case 'regraCustomizada': return "Sempre finalizar a interação com uma pergunta aberta para incentivar o diálogo.";
+      case 'regrasProibidas': return "Nunca fazer promessas que não podem ser cumpridas ou fornecer informações falsas.";
+      case 'regrasObrigatorias': return "Sempre me apresentar no início da conversa e agradecer ao final.";
+      case 'passos': return "1. Saudar o usuário e perguntar o motivo do contato. 2. Coletar as informações necessárias. 3. Fornecer a solução ou o próximo passo. 4. Confirmar se o problema foi resolvido.";
+      case 'descricao': return "Esta ferramenta executa uma busca em tempo real no banco de dados para encontrar informações atualizadas.";
       default: return `Sugestão de IA para ${field}...`;
     }
   }
@@ -34,6 +42,16 @@ const generateImprovedText = (field: string, value: string): string => {
         return `Demonstrarei empatia ao ${value.toLowerCase()}, reconhecendo as frustrações do usuário e validando seus sentimentos antes de oferecer uma solução.`;
     case 'linguagemModos':
         return `Além dos modos ${value.toLowerCase()}, serei capaz de me adaptar a contextos formais, técnicos e inspiradores conforme a necessidade.`;
+    case 'regraCustomizada':
+        return `Uma regra adicional importante é: ${value}. Esta diretriz deve ser seguida para garantir a consistência da comunicação.`;
+    case 'regrasProibidas':
+        return `É estritamente proibido: ${value}. Violar esta regra compromete a integridade da minha função.`;
+    case 'regrasObrigatorias':
+        return `É mandatório que eu sempre: ${value}. Esta é uma diretriz fundamental da minha operação.`;
+    case 'passos':
+        return `Para este fluxo, os passos foram refinados para maior clareza: ${value}. A execução precisa destes passos é crucial.`;
+    case 'descricao': // For tools
+        return `Esta ferramenta serve para: ${value}. Ela deve ser utilizada exclusivamente para este propósito.`;
     default:
       return `[Versão Aprimorada por IA] ${value}`;
   }
@@ -47,9 +65,7 @@ serve(async (req) => {
   try {
     const { field, value } = await req.json()
 
-    // --- LÓGICA DA IA (SIMULADA E MELHORADA) ---
     const improvedText = generateImprovedText(field, value);
-    // --- FIM DA LÓGICA DA IA ---
 
     return new Response(
       JSON.stringify({ improvedText }),

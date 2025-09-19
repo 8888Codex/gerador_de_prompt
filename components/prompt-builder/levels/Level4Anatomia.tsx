@@ -10,9 +10,10 @@ interface Level4AnatomiaProps {
   data: AnatomiaModule;
   onUpdate: (field: keyof AnatomiaModule, value: any) => void;
   onNext: () => void;
+  onImprove: (field: keyof AnatomiaModule, value: string) => void;
 }
 
-const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, onUpdate, onNext }) => {
+const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, onUpdate, onNext, onImprove }) => {
   const isComplete = data.tamanhoMensagem !== null && (data.usarEmojis || data.usarMarkdown || data.regraCustomizada.trim() !== '');
 
   const sizeOptions: { value: MessageSize; label: string; description: string }[] = [
@@ -76,6 +77,7 @@ const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, onUpdate, onNext 
           value={data.regraCustomizada}
           onChange={(e) => onUpdate('regraCustomizada', e.target.value)}
           placeholder="Ex: Sempre termine a resposta com uma pergunta para o usuário."
+          onImprove={() => onImprove('regraCustomizada', data.regraCustomizada)}
         />
       </div>
 

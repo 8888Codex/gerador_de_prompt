@@ -14,9 +14,10 @@ interface Level7FerramentasProps {
   onUpdate: (id: string, field: 'nome' | 'descricao', value: string) => void;
   onRemove: (id: string) => void;
   onNext: () => void;
+  onImprove: (id: string, field: 'descricao', value: string) => void;
 }
 
-const Level7Ferramentas: React.FC<Level7FerramentasProps> = ({ data, onAdd, onUpdate, onRemove, onNext }) => {
+const Level7Ferramentas: React.FC<Level7FerramentasProps> = ({ data, onAdd, onUpdate, onRemove, onNext, onImprove }) => {
   const isComplete = data.items.some(item => item.nome.trim() !== '' && item.descricao.trim() !== '');
 
   return (
@@ -50,6 +51,7 @@ const Level7Ferramentas: React.FC<Level7FerramentasProps> = ({ data, onAdd, onUp
               value={item.descricao}
               onChange={(e) => onUpdate(item.id, 'descricao', e.target.value)}
               placeholder="O que essa ferramenta faz? Ex: 'Busca um produto no nosso catálogo pelo nome e retorna o preço e o link.'"
+              onImprove={() => onImprove(item.id, 'descricao', item.descricao)}
             />
           </div>
         ))}
