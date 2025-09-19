@@ -20,20 +20,18 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <LoginPage.VideoBackground videoUrl="https://videos.pexels.com/video-files/8128311/8128311-uhd_2560_1440_25fps.mp4" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/80 backdrop-blur-sm">
+      <div className="relative z-20 w-full max-w-md animate-fadeIn">
+        <LoginPage.LoginForm onSubmit={handleLogin} />
+      </div>
       
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-30 bg-black/30 p-2 rounded-full"
+        className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-30"
         aria-label="Close modal"
       >
         <X size={24} />
       </button>
-
-      <div className="relative z-20 w-full max-w-md animate-fadeIn">
-        <LoginPage.LoginForm onSubmit={handleLogin} />
-      </div>
     </div>
   );
 };
