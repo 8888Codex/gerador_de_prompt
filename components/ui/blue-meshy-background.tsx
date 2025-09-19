@@ -65,8 +65,7 @@ function buildFragmentShader(): string {
   const fbmOctavesInt = Math.floor(FBM_OCTAVES);
 
   // Convert seaColors array to GLSL array of vec3.
-  const colorArraySrc = seaColors.map((c) => `vec3(${c[0]}, ${c[1]}, ${c[2]})`).join(",
-  ");
+  const colorArraySrc = seaColors.map((c) => `vec3(${c[0]}, ${c[1]}, ${c[2]})`).join(",\n  ");
 
   return `#version 300 es
 
