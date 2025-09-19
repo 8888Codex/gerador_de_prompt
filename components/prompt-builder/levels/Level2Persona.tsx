@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { PersonaModule, PromptProject, ModuleProgress } from '../../../types';
+import { PersonaModule, PromptProject } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
 import ExampleBox from '../ExampleBox';

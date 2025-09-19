@@ -5,7 +5,6 @@ import { usePromptProject } from '../../hooks/usePromptProject';
 import LevelContent from '../../components/prompt-builder/LevelContent';
 import WavyBackground from '../../components/ui/WavyBackground';
 import { supabase } from '../../src/integrations/supabase/client';
-import { ObjetivoModule, PersonaModule, AnatomiaModule, RestricoesModule } from '../../types';
 
 export default function PromptBuilderPage() {
   const { 
@@ -37,25 +36,33 @@ export default function PromptBuilderPage() {
       if (data.improvedText) {
         switch (level) {
           case 1:
-            updateObjetivoField(field as keyof ObjetivoModule, data.improvedText);
+            if (field === 'nomeAssistente' || field === 'missao') {
+              updateObjetivoField(field, data.improvedText);
+            }
             break;
           case 2:
-            updatePersonaField(field as keyof PersonaModule, data.improvedText);
+            if (field === 'postura' || field === 'tom' || field === 'atitude' || field === 'empatia' || field === 'linguagemModos') {
+              updatePersonaField(field, data.improvedText);
+            }
             break;
           case 4:
-            updateAnatomiaField(field as keyof AnatomiaModule, data.improvedText);
+            if (field === 'regraCustomizada') {
+              updateAnatomiaField(field, data.improvedText);
+            }
             break;
           case 5:
-            updateRestricoesField(field as keyof RestricoesModule, data.improvedText);
+            if (field === 'regrasProibidas' || field === 'regrasObrigatorias') {
+              updateRestricoesField(field, data.improvedText);
+            }
             break;
           case 6:
-            if (itemId) {
-              updateFluxo(itemId, field as 'passos', data.improvedText);
+            if (itemId && field === 'passos') {
+              updateFluxo(itemId, field, data.improvedText);
             }
             break;
           case 7:
-            if (itemId) {
-              updateFerramenta(itemId, field as 'descricao', data.improvedText);
+            if (itemId && field === 'descricao') {
+              updateFerramenta(itemId, field, data.improvedText);
             }
             break;
         }

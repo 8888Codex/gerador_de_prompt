@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { PromptProject } from '../../types';
+import { PromptProject, ObjetivoModule, PersonaModule, AnatomiaModule, RestricoesModule } from '../../types';
 import Level1Objetivo from './levels/Level1Objetivo';
 import Level2Persona from './levels/Level2Persona';
 import Level3Variaveis from './levels/Level3Variaveis';
@@ -36,19 +36,59 @@ const LevelContent: React.FC<LevelContentProps> = (props) => {
   const renderContent = () => {
     switch (project.currentLevel) {
       case 1:
-        return <Level1Objetivo data={project.modules.objetivo} onUpdate={props.onUpdateObjetivo} onNext={onNextLevel} onImprove={(field, value) => props.onImproveText(1, field, value)} />;
+        return <Level1Objetivo 
+          data={project.modules.objetivo} 
+          onUpdate={props.onUpdateObjetivo} 
+          onNext={onNextLevel} 
+          onImprove={(field: keyof ObjetivoModule, value: string) => props.onImproveText(1, field, value)} 
+        />;
       case 2:
-        return <Level2Persona data={project.modules.persona} onUpdate={props.onUpdatePersona} onNext={onNextLevel} onImprove={(field, value) => props.onImproveText(2, field, value)} />;
+        return <Level2Persona 
+          data={project.modules.persona} 
+          onUpdate={props.onUpdatePersona} 
+          onNext={onNextLevel} 
+          onImprove={(field: keyof PersonaModule, value: string) => props.onImproveText(2, field, value)} 
+        />;
       case 3:
-        return <Level3Variaveis data={project.modules.variaveis} onAdd={props.onAddVariavel} onUpdate={props.onUpdateVariavel} onRemove={props.onRemoveVariavel} onNext={onNextLevel} />;
+        return <Level3Variaveis 
+          data={project.modules.variaveis} 
+          onAdd={props.onAddVariavel} 
+          onUpdate={props.onUpdateVariavel} 
+          onRemove={props.onRemoveVariavel} 
+          onNext={onNextLevel} 
+        />;
       case 4:
-        return <Level4Anatomia data={project.modules.anatomia} onUpdate={props.onUpdateAnatomia} onNext={onNextLevel} onImprove={(field, value) => props.onImproveText(4, field, value)} />;
+        return <Level4Anatomia 
+          data={project.modules.anatomia} 
+          onUpdate={props.onUpdateAnatomia} 
+          onNext={onNextLevel} 
+          onImprove={(field: keyof AnatomiaModule, value: string) => props.onImproveText(4, field, value)} 
+        />;
       case 5:
-        return <Level5Restricoes data={project.modules.restricoes} onUpdate={props.onUpdateRestricoes} onNext={onNextLevel} onImprove={(field, value) => props.onImproveText(5, field, value)} />;
+        return <Level5Restricoes 
+          data={project.modules.restricoes} 
+          onUpdate={props.onUpdateRestricoes} 
+          onNext={onNextLevel} 
+          onImprove={(field: keyof RestricoesModule, value: string) => props.onImproveText(5, field, value)} 
+        />;
       case 6:
-        return <Level6Fluxos data={project.modules.fluxos} onAdd={props.onAddFluxo} onUpdate={props.onUpdateFluxo} onRemove={props.onRemoveFluxo} onNext={onNextLevel} onImprove={(itemId, field, value) => props.onImproveText(6, field, value, itemId)} />;
+        return <Level6Fluxos 
+          data={project.modules.fluxos} 
+          onAdd={props.onAddFluxo} 
+          onUpdate={props.onUpdateFluxo} 
+          onRemove={props.onRemoveFluxo} 
+          onNext={onNextLevel} 
+          onImprove={(itemId: string, field: 'passos', value: string) => props.onImproveText(6, field, value, itemId)} 
+        />;
       case 7:
-        return <Level7Ferramentas data={project.modules.ferramentas} onAdd={props.onAddFerramenta} onUpdate={props.onUpdateFerramenta} onRemove={props.onRemoveFerramenta} onNext={onNextLevel} onImprove={(itemId, field, value) => props.onImproveText(7, field, value, itemId)} />;
+        return <Level7Ferramentas 
+          data={project.modules.ferramentas} 
+          onAdd={props.onAddFerramenta} 
+          onUpdate={props.onUpdateFerramenta} 
+          onRemove={props.onRemoveFerramenta} 
+          onNext={onNextLevel} 
+          onImprove={(itemId: string, field: 'descricao', value: string) => props.onImproveText(7, field, value, itemId)} 
+        />;
       case 8:
         return <Level8Preview project={project} />;
       default:

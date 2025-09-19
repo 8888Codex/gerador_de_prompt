@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { ObjetivoModule, PromptProject, ModuleProgress } from '../../../types';
+import { ObjetivoModule, PromptProject } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
 import ExampleBox from '../ExampleBox';
