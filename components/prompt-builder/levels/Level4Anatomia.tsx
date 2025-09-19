@@ -8,7 +8,6 @@ import ExampleBox from '../ExampleBox';
 
 interface Level4AnatomiaProps {
   data: PromptProject['modules']['anatomia'];
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo anatomia, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['anatomia'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof AnatomiaModule, value: string) => void;
@@ -93,10 +92,11 @@ const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, onUpdate, onNext,
 
       <div className="flex justify-end pt-4">
         <StyledButton
-          title="Salvar e Avançar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Avançar
+        </StyledButton>
       </div>
     </div>
   );

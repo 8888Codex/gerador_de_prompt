@@ -76,10 +76,11 @@ const Level3Variaveis: React.FC<Level3VariaveisProps> = ({ data, onAdd, onUpdate
           {validItemsCount} de 2 variáveis necessárias preenchidas.
         </p>
         <StyledButton
-          title="Salvar e Avançar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Avançar
+        </StyledButton>
       </div>
     </div>
   );

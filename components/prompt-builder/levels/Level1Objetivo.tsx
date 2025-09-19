@@ -8,7 +8,6 @@ import ExampleBox from '../ExampleBox';
 
 interface Level1ObjetivoProps {
   data: PromptProject['modules']['objetivo'];
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo objetivo, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['objetivo'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof ObjetivoModule, value: string) => void;
@@ -51,10 +50,11 @@ const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext,
 
       <div className="flex justify-end pt-4">
         <StyledButton
-          title="Salvar e Avançar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Avançar
+        </StyledButton>
       </div>
     </div>
   );

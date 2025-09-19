@@ -8,7 +8,6 @@ import ExampleBox from '../ExampleBox';
 
 interface Level2PersonaProps {
   data: PromptProject['modules']['persona'];
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo persona, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['persona'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof PersonaModule, value: string) => void;
@@ -98,10 +97,11 @@ const Level2Persona: React.FC<Level2PersonaProps> = ({ data, onUpdate, onNext, o
 
       <div className="flex justify-end pt-4">
         <StyledButton
-          title="Salvar e Avançar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Avançar
+        </StyledButton>
       </div>
     </div>
   );

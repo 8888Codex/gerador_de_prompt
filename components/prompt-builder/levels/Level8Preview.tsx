@@ -61,7 +61,6 @@ const Level8Preview: React.FC<Level8PreviewProps> = ({ project }) => {
 
       <div className="flex justify-end items-center gap-4 pt-4">
         <StyledButton
-          title={copied ? "Copiado!" : "Copiar para Área de Transferência"}
           onClick={handleCopy}
           className="flex items-center gap-2"
         >
@@ -69,7 +68,6 @@ const Level8Preview: React.FC<Level8PreviewProps> = ({ project }) => {
           {copied ? "Copiado!" : "Copiar"}
         </StyledButton>
         <StyledButton
-          title="Baixar como .txt"
           onClick={handleDownload}
           className="flex items-center gap-2"
         >

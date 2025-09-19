@@ -77,10 +77,11 @@ const Level6Fluxos: React.FC<Level6FluxosProps> = ({ data, onAdd, onUpdate, onRe
 
       <div className="flex justify-end pt-4">
         <StyledButton
-          title="Salvar e Avançar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Avançar
+        </StyledButton>
       </div>
     </div>
   );

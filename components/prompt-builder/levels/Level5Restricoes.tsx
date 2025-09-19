@@ -8,7 +8,6 @@ import ExampleBox from '../ExampleBox';
 
 interface Level5RestricoesProps {
   data: PromptProject['modules']['restricoes'];
-  // CORRIGIDO: Agora aceita TODAS as chaves do módulo restricoes, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['restricoes'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof RestricoesModule, value: string) => void;
@@ -51,10 +50,11 @@ const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, onUpdate, onN
 
       <div className="flex justify-end pt-4">
         <StyledButton
-          title="Salvar e Avançar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Avançar
+        </StyledButton>
       </div>
     </div>
   );

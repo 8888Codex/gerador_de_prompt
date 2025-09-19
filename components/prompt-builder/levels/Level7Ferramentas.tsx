@@ -77,10 +77,11 @@ const Level7Ferramentas: React.FC<Level7FerramentasProps> = ({ data, onAdd, onUp
 
       <div className="flex justify-end pt-4">
         <StyledButton
-          title="Salvar e Finalizar"
           onClick={onNext}
           disabled={!isComplete}
-        />
+        >
+          Salvar e Finalizar
+        </StyledButton>
       </div>
     </div>
   );
