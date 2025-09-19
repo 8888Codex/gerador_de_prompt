@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { usePromptProject } from '../../hooks/usePromptProject';
-import LevelSidebar from '../../components/prompt-builder/LevelSidebar';
 import LevelContent from '../../components/prompt-builder/LevelContent';
 import AnimatedGradientBackground from '../../components/AnimatedGradientBackground';
 import { supabase } from '../../src/integrations/supabase/client';
@@ -43,14 +42,8 @@ export default function PromptBuilderPage() {
           </p>
         </header>
 
-        <main className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <aside className="lg:col-span-1">
-            <LevelSidebar 
-              currentLevel={project.currentLevel}
-              completedLevels={project.completedLevels}
-            />
-          </aside>
-          <section className="lg:col-span-2">
+        <main className="flex justify-center items-start py-10">
+          <section className="w-full max-w-4xl">
             <LevelContent 
               project={project}
               onUpdateObjetivo={updateObjetivoField}
