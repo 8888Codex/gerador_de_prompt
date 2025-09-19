@@ -74,7 +74,7 @@ export default function PromptBuilderPage() {
           </h1>
           <p className="mt-2 text-lg text-gray-300">
             Siga os níveis para construir um prompt poderoso e eficaz.
-          p>
+          </p>
         </header>
 
         <main className="flex justify-center items-start py-10">
