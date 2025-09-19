@@ -13,12 +13,16 @@ import Level8Preview from './levels/Level8Preview';
 
 interface LevelContentProps {
   project: PromptProject;
+  // CORRIGIDO: Agora espera uma função que aceita TODAS as chaves do módulo objetivo
   onUpdateObjetivo: (field: keyof PromptProject['modules']['objetivo'], value: any) => void;
+  // CORRIGIDO: Agora espera uma função que aceita TODAS as chaves do módulo persona
   onUpdatePersona: (field: keyof PromptProject['modules']['persona'], value: any) => void;
   onAddVariavel: () => void;
   onUpdateVariavel: (id: string, field: 'key' | 'description', value: string) => void;
   onRemoveVariavel: (id: string) => void;
+  // CORRIGIDO: Agora espera uma função que aceita TODAS as chaves do módulo anatomia
   onUpdateAnatomia: (field: keyof PromptProject['modules']['anatomia'], value: any) => void;
+  // CORRIGIDO: Agora espera uma função que aceita TODAS as chaves do módulo restricoes
   onUpdateRestricoes: (field: keyof PromptProject['modules']['restricoes'], value: any) => void;
   onAddFluxo: () => void;
   onUpdateFluxo: (id: string, field: 'nome' | 'passos', value: string) => void;

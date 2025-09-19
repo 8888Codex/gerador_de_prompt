@@ -26,7 +26,7 @@ const initialProjectState: PromptProject = {
 export const usePromptProject = () => {
   const [project, setProject] = useState<PromptProject>(initialProjectState);
 
-  // Usando exatamente os mesmos tipos que o PromptProject define
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo objetivo, incluindo ModuleProgress
   const updateObjetivoField = (field: keyof PromptProject['modules']['objetivo'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
@@ -37,6 +37,7 @@ export const usePromptProject = () => {
     }));
   };
 
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo persona, incluindo ModuleProgress
   const updatePersonaField = (field: keyof PromptProject['modules']['persona'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
@@ -47,6 +48,7 @@ export const usePromptProject = () => {
     }));
   };
 
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo anatomia, incluindo ModuleProgress
   const updateAnatomiaField = (field: keyof PromptProject['modules']['anatomia'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
@@ -57,6 +59,7 @@ export const usePromptProject = () => {
     }));
   };
 
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo restricoes, incluindo ModuleProgress
   const updateRestricoesField = (field: keyof PromptProject['modules']['restricoes'], value: any) => {
     setProject(prev => ({ 
       ...prev, 

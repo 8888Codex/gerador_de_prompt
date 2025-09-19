@@ -8,6 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level4AnatomiaProps {
   data: PromptProject['modules']['anatomia'];
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo anatomia, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['anatomia'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof AnatomiaModule, value: string) => void;

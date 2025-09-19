@@ -8,6 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level1ObjetivoProps {
   data: PromptProject['modules']['objetivo'];
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo objetivo, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['objetivo'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof ObjetivoModule, value: string) => void;

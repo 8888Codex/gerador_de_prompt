@@ -8,6 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level2PersonaProps {
   data: PromptProject['modules']['persona'];
+  // CORRIGIDO: Agora aceita TODAS as chaves do módulo persona, incluindo ModuleProgress
   onUpdate: (field: keyof PromptProject['modules']['persona'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof PersonaModule, value: string) => void;
