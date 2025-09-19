@@ -4,6 +4,7 @@ import React from 'react';
 import { PersonaModule } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
+import ExampleBox from '../ExampleBox';
 
 interface Level2PersonaProps {
   data: PersonaModule;
@@ -62,6 +63,15 @@ const Level2Persona: React.FC<Level2PersonaProps> = ({ data, onUpdate, onNext, o
           </div>
         </div>
       </div>
+
+      <ExampleBox>
+        <p>Como o assistente deve se comportar e soar? A personalidade deve ser consistente.</p>
+        <ul>
+          <li><strong>Postura:</strong> <code>Sou um especialista paciente e didático.</code></li>
+          <li><strong>Tom de Voz:</strong> <code>Uso um tom calmo, profissional e encorajador.</code></li>
+          <li><strong>Gênero:</strong> <code>Neutro, para ser inclusivo com todos.</code></li>
+        </ul>
+      </ExampleBox>
 
       <div className="flex justify-end pt-4">
         <StyledButton

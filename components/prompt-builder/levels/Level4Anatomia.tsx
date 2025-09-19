@@ -4,6 +4,7 @@ import React from 'react';
 import { AnatomiaModule, MessageSize } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
+import ExampleBox from '../ExampleBox';
 
 interface Level4AnatomiaProps {
   data: AnatomiaModule;
@@ -77,6 +78,15 @@ const Level4Anatomia: React.FC<Level4AnatomiaProps> = ({ data, onUpdate, onNext 
           placeholder="Ex: Sempre termine a resposta com uma pergunta para o usuário."
         />
       </div>
+
+      <ExampleBox>
+        <p>Defina o estilo da comunicação. Como as respostas devem ser estruturadas?</p>
+        <ul>
+          <li><strong>Tamanho:</strong> <code>Médio</code> (respostas claras, mas sem serem curtas demais).</li>
+          <li><strong>Formatação:</strong> Ativar <code>Emojis</code> e <code>Markdown</code> para destacar informações importantes.</li>
+          <li><strong>Regra Customizada:</strong> <code>Sempre que possível, use listas para organizar as informações.</code></li>
+        </ul>
+      </ExampleBox>
 
       <div className="flex justify-end pt-4">
         <StyledButton

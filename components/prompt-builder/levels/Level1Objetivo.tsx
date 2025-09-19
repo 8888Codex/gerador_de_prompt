@@ -4,6 +4,7 @@ import React from 'react';
 import { ObjetivoModule } from '../../../types';
 import StyledTextarea from '../StyledTextarea';
 import StyledButton from '../../StyledButton';
+import ExampleBox from '../ExampleBox';
 
 interface Level1ObjetivoProps {
   data: ObjetivoModule;
@@ -13,7 +14,6 @@ interface Level1ObjetivoProps {
 }
 
 const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext, onImprove }) => {
-  // A validação agora é feita no hook, mas podemos manter isso para o estado do botão
   const isComplete = data.nomeAssistente.trim() !== '' && data.missao.trim().length >= 20;
 
   return (
@@ -39,6 +39,14 @@ const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext,
           onImprove={() => onImprove('missao', data.missao)}
         />
       </div>
+
+      <ExampleBox>
+        <p>Pense no seu assistente como um funcionário. Qual seria o cargo dele e sua principal responsabilidade?</p>
+        <ul>
+          <li><strong>Nome:</strong> <code>Assistente de Suporte ao Cliente</code></li>
+          <li><strong>Missão:</strong> <code>Minha missão é resolver as dúvidas dos clientes sobre nossos produtos de forma rápida e amigável, garantindo que eles tenham a melhor experiência possível.</code></li>
+        </ul>
+      </ExampleBox>
 
       <div className="flex justify-end pt-4">
         <StyledButton

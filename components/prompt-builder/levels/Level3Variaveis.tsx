@@ -5,6 +5,7 @@ import { VariaveisModule, Variavel } from '../../../types';
 import StyledInput from '../StyledInput';
 import StyledButton from '../../StyledButton';
 import { PlusCircle, Trash2 } from 'lucide-react';
+import ExampleBox from '../ExampleBox';
 
 interface Level3VariaveisProps {
   data: VariaveisModule;
@@ -61,6 +62,14 @@ const Level3Variaveis: React.FC<Level3VariaveisProps> = ({ data, onAdd, onUpdate
           Adicionar Variável
         </button>
       </div>
+
+      <ExampleBox>
+        <p>Variáveis são como etiquetas na memória do assistente. Use nomes claros e descrições precisas.</p>
+        <ul>
+          <li><strong>Chave:</strong> <code>NOME_DO_CLIENTE</code>, <strong>Descrição:</strong> <code>O primeiro nome do cliente com quem estou conversando.</code></li>
+          <li><strong>Chave:</strong> <code>NUMERO_DO_PEDIDO</code>, <strong>Descrição:</strong> <code>O número do último pedido feito pelo cliente.</code></li>
+        </ul>
+      </ExampleBox>
 
       <div className="flex justify-between items-center pt-4">
         <p className="text-sm text-gray-400">
