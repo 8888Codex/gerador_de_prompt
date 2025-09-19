@@ -32,7 +32,7 @@ const initialProjectState: PromptProject = {
       completionScore: 0,
     },
     variaveis: {
-      items: [],
+      items: [{ id: 'initial-var-1', key: '', description: '' }],
       isUnlocked: false,
       isCompleted: false,
       completionScore: 0,

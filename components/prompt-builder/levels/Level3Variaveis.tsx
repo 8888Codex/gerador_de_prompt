@@ -42,8 +42,9 @@ const Level3Variaveis: React.FC<Level3VariaveisProps> = ({ data, onAdd, onUpdate
             </div>
             <button
               onClick={() => onRemove(item.id)}
-              className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+              className="p-2 text-gray-400 hover:text-red-500 transition-colors disabled:text-gray-600 disabled:cursor-not-allowed"
               aria-label="Remover Variável"
+              disabled={data.items.length <= 1}
             >
               <Trash2 size={20} />
             </button>
