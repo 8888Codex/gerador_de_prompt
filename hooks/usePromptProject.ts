@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule } from '../types';
+import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule, RestricoesModule } from '../types';
 import { LEVELS } from '../data/levels';
 
 const initialProjectState: PromptProject = {
@@ -42,6 +42,13 @@ const initialProjectState: PromptProject = {
       usarEmojis: false,
       usarMarkdown: false,
       regraCustomizada: '',
+      isUnlocked: false,
+      isCompleted: false,
+      completionScore: 0,
+    },
+    restricoes: {
+      regrasProibidas: '',
+      regrasObrigatorias: '',
       isUnlocked: false,
       isCompleted: false,
       completionScore: 0,
@@ -94,6 +101,13 @@ export const usePromptProject = () => {
     }));
   };
 
+  const updateRestricoesField = (field: keyof RestricoesModule, value: string) => {
+    setProject(prev => ({
+      ...prev,
+      modules: { ...prev.modules, restricoes: { ...prev.modules.restricoes, [field]: value } },
+    }));
+  };
+
   const completeAndAdvanceLevel = () => {
     const currentLevelData = LEVELS.find(l => l.id === project.currentLevel);
     if (!currentLevelData) return;
@@ -131,6 +145,12 @@ export const usePromptProject = () => {
         else if (isSizeSelected || isRuleDefined) score = 50;
         canAdvance = score >= currentLevelData.minScore;
         break;
+      
+      case 5:
+        const { regrasProibidas } = project.modules.restricoes;
+        if (regrasProibidas.trim() !== '') score = 100;
+        canAdvance = score >= currentLevelData.minScore;
+        break;
     }
 
     if (canAdvance) {
@@ -156,5 +176,5 @@ export const usePromptProject = () => {
     }
   };
 
-  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, completeAndAdvanceLevel };
+  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, updateRestricoesField, completeAndAdvanceLevel };
 };

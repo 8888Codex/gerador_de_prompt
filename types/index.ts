@@ -47,6 +47,11 @@ export interface AnatomiaModule {
   regraCustomizada: string;
 }
 
+export interface RestricoesModule {
+  regrasProibidas: string;
+  regrasObrigatorias: string;
+}
+
 export interface PromptProject {
   id: string;
   name: string;
@@ -61,6 +66,7 @@ export interface PromptProject {
     persona: PersonaModule & ModuleProgress;
     variaveis: VariaveisModule & ModuleProgress;
     anatomia: AnatomiaModule & ModuleProgress;
+    restricoes: RestricoesModule & ModuleProgress;
     // Other modules will be added later
   };
 }
