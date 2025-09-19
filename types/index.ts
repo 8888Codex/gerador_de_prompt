@@ -38,6 +38,15 @@ export interface VariaveisModule {
   items: Variavel[];
 }
 
+export type MessageSize = 'curta' | 'media' | 'longa';
+
+export interface AnatomiaModule {
+  tamanhoMensagem: MessageSize | null;
+  usarEmojis: boolean;
+  usarMarkdown: boolean;
+  regraCustomizada: string;
+}
+
 export interface PromptProject {
   id: string;
   name: string;
@@ -51,6 +60,7 @@ export interface PromptProject {
     objetivo: ObjetivoModule & ModuleProgress;
     persona: PersonaModule & ModuleProgress;
     variaveis: VariaveisModule & ModuleProgress;
+    anatomia: AnatomiaModule & ModuleProgress;
     // Other modules will be added later
   };
 }

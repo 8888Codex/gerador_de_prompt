@@ -15,6 +15,7 @@ export default function PromptBuilderPage() {
     addVariavel,
     updateVariavel,
     removeVariavel,
+    updateAnatomiaField,
     completeAndAdvanceLevel 
   } = usePromptProject();
 
@@ -59,6 +60,7 @@ export default function PromptBuilderPage() {
               onAddVariavel={addVariavel}
               onUpdateVariavel={updateVariavel}
               onRemoveVariavel={removeVariavel}
+              onUpdateAnatomia={updateAnatomiaField}
               onNextLevel={completeAndAdvanceLevel}
               onImproveText={handleImproveText}
             />
