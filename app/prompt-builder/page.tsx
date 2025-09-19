@@ -9,7 +9,7 @@ import { supabase } from '../../src/integrations/supabase/client';
 import { ObjetivoModule } from '../../types';
 
 export default function PromptBuilderPage() {
-  const { project, updateObjetivoField, completeAndAdvanceLevel, setProject } = usePromptProject();
+  const { project, updateObjetivoField, goToNextLevel, setProject } = usePromptProject();
 
   const handleImproveText = async (field: string, value: string) => {
     try {
@@ -53,7 +53,7 @@ export default function PromptBuilderPage() {
             <LevelContent 
               project={project}
               onUpdateObjetivo={updateObjetivoField}
-              onNextLevel={completeAndAdvanceLevel}
+              onNextLevel={goToNextLevel}
               onImproveText={handleImproveText}
             />
           </section>

@@ -13,8 +13,7 @@ interface Level1ObjetivoProps {
 }
 
 const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext, onImprove }) => {
-  // Updated validation logic based on the new rules
-  const isComplete = data.nomeAssistente.trim() !== '' && data.missao.trim().length >= 20;
+  const isComplete = data.nomeAssistente.trim() !== '' && data.missao.trim() !== '';
 
   return (
     <div className="space-y-8">
@@ -31,18 +30,13 @@ const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext,
           placeholder="Ex: Assistente de Vendas Proativo, Guia de Suporte Técnico Nível 1, etc."
           onImprove={() => onImprove('nomeAssistente', data.nomeAssistente)}
         />
-        <div>
-          <StyledTextarea
-            label="Missão Principal"
-            value={data.missao}
-            onChange={(e) => onUpdate('missao', e.target.value)}
-            placeholder="Descreva em uma ou duas frases o que o assistente deve fazer. Ex: 'Minha missão é ajudar os clientes a encontrarem o produto certo, entendendo suas necessidades e oferecendo recomendações personalizadas.'"
-            onImprove={() => onImprove('missao', data.missao)}
-          />
-          <p className={`text-xs mt-2 ${data.missao.trim().length >= 20 ? 'text-green-400' : 'text-gray-400'}`}>
-            {data.missao.trim().length}/20 caracteres mínimos
-          </p>
-        </div>
+        <StyledTextarea
+          label="Missão Principal"
+          value={data.missao}
+          onChange={(e) => onUpdate('missao', e.target.value)}
+          placeholder="Descreva em uma ou duas frases o que o assistente deve fazer. Ex: 'Minha missão é ajudar os clientes a encontrarem o produto certo, entendendo suas necessidades e oferecendo recomendações personalizadas.'"
+          onImprove={() => onImprove('missao', data.missao)}
+        />
       </div>
 
       <div className="flex justify-end pt-4">

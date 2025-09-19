@@ -1,4 +1,4 @@
 {
-  "/prompt-builder/page": "app/prompt-builder/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/prompt-builder/page": "app/prompt-builder/page.js"
 }
