@@ -13,16 +13,10 @@ interface LoginModalProps {
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   if (!isOpen) return null;
 
-  const handleLogin = (email: string, password: string, remember: boolean) => {
-    console.log('Login attempt:', { email, password, remember });
-    // Após o login, chama a função de sucesso para redirecionar.
-    onLoginSuccess();
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/80 backdrop-blur-sm">
       <div className="relative z-20 w-full max-w-md animate-fadeIn">
-        <LoginPage.LoginForm onSubmit={handleLogin} />
+        <LoginPage.LoginForm onSuccess={onLoginSuccess} />
       </div>
       
       <button

@@ -1,13 +1,10 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import React, { useState } from 'react';
+import { Eye, EyeOff, Mail, Lock, MessageSquare } from 'lucide-react';
+import { supabase } from '../../src/integrations/supabase/client';
 
 interface LoginFormProps {
-    onSubmit: (email: string, password: string, remember: boolean) => void;
-}
-
-interface VideoBackgroundProps {
-    videoUrl: string;
+    onSuccess: () => void;
 }
 
 interface FormInputProps {
@@ -17,12 +14,6 @@ interface FormInputProps {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
-}
-
-interface ToggleSwitchProps {
-    checked: boolean;
-    onChange: () => void;
-    id: string;
 }
 
 // FormInput Component
@@ -44,84 +35,70 @@ const FormInput: React.FC<FormInputProps> = ({ icon, type, placeholder, value, o
     );
 };
 
-// ToggleSwitch Component
-const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange, id }) => {
-    return (
-        <div className="relative inline-block w-10 h-5 cursor-pointer">
-            <input
-                type="checkbox"
-                id={id}
-                className="sr-only"
-                checked={checked}
-                onChange={onChange}
-            />
-            <div className={`absolute inset-0 rounded-full transition-colors duration-200 ease-in-out ${checked ? 'bg-blue-600' : 'bg-white/20'}`}>
-                <div className={`absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white transition-transform duration-200 ease-in-out ${checked ? 'transform translate-x-5' : ''}`} />
-            </div>
-        </div>
-    );
-};
-
-// VideoBackground Component (mantido para possível uso futuro)
-const VideoBackground: React.FC<VideoBackgroundProps> = ({ videoUrl }) => {
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(error => {
-                console.error("Video autoplay failed:", error);
-            });
-        }
-    }, []);
-
-    return (
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-            <div className="absolute inset-0 bg-black/30 z-10" />
-            <video
-                ref={videoRef}
-                className="absolute inset-0 min-w-full min-h-full object-cover w-auto h-auto"
-                autoPlay
-                loop
-                muted
-                playsInline
-            >
-                <source src={videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    );
-};
-
 // Main LoginForm Component
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
+    const [mode, setMode] = useState<'login' | 'signup'>('login');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [whatsapp, setWhatsapp] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [remember, setRemember] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [message, setMessage] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError(null);
+        setMessage(null);
 
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setIsSuccess(true);
-        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            if (mode === 'signup') {
+                const { error: signUpError } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            whatsapp: whatsapp,
+                        },
+                    },
+                });
+                if (signUpError) throw signUpError;
+                setMessage("Cadastro realizado! Verifique seu e-mail para confirmar a conta.");
+            } else {
+                const { error: signInError } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+                if (signInError) throw signInError;
+                
+                setIsSuccess(true);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                onSuccess();
+            }
+        } catch (err: any) {
+            setError(err.message || 'Ocorreu um erro.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
-        onSubmit(email, password, remember);
-        setIsSubmitting(false);
-        setIsSuccess(false);
+    const toggleMode = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setMode(prev => prev === 'login' ? 'signup' : 'login');
+        setError(null);
+        setMessage(null);
     };
 
     return (
         <div className="p-8 rounded-2xl bg-gray-900/80 border border-gray-700">
             <div className="mb-8 text-center">
                 <h2 className="text-3xl font-bold mb-2 text-white">
-                    Bem-vindo ao Codex
+                    {mode === 'login' ? 'Bem-vindo ao Codex' : 'Crie sua Conta'}
                 </h2>
                 <p className="text-white/80">
-                    Faça login ou crie sua conta para começar.
+                    {mode === 'login' ? 'Faça login para continuar.' : 'Preencha os dados para se cadastrar.'}
                 </p>
             </div>
 
@@ -134,6 +111,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
+
+                {mode === 'signup' && (
+                    <FormInput
+                        icon={<MessageSquare className="text-white/60" size={18} />}
+                        type="tel"
+                        placeholder="Número do WhatsApp (Opcional)"
+                        value={whatsapp}
+                        onChange={(e) => setWhatsapp(e.target.value)}
+                    />
+                )}
 
                 <div className="relative">
                     <FormInput
@@ -154,27 +141,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                     </button>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                        <div onClick={() => setRemember(!remember)} className="cursor-pointer">
-                            <ToggleSwitch
-                                checked={remember}
-                                onChange={() => setRemember(!remember)}
-                                id="remember-me"
-                            />
-                        </div>
-                        <label
-                            htmlFor="remember-me"
-                            className="text-sm text-white/80 cursor-pointer hover:text-white transition-colors"
-                            onClick={() => setRemember(!remember)}
-                        >
-                            Lembrar de mim
-                        </label>
+                {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+                {message && <p className="text-green-400 text-sm text-center">{message}</p>}
+
+                {mode === 'login' && (
+                    <div className="flex items-center justify-end">
+                        <a href="#" className="text-sm text-white/80 hover:text-white transition-colors">
+                            Esqueceu a senha?
+                        </a>
                     </div>
-                    <a href="#" className="text-sm text-white/80 hover:text-white transition-colors">
-                        Esqueceu a senha?
-                    </a>
-                </div>
+                )}
 
                 <button
                     type="submit"
@@ -184,24 +160,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                             : 'bg-blue-600 hover:bg-blue-700'
                         } text-white font-medium transition-all duration-200 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40`}
                 >
-                    {isSubmitting ? 'Entrando...' : 'Continuar'}
+                    {isSubmitting ? (mode === 'login' ? 'Entrando...' : 'Cadastrando...') : (mode === 'login' ? 'Continuar' : 'Criar Conta')}
                 </button>
             </form>
 
             <p className="mt-8 text-center text-sm text-white/60">
-                Não tem uma conta?{' '}
-                <a href="#" className="font-medium text-white hover:text-blue-300 transition-colors">
-                    Crie uma
+                {mode === 'login' ? 'Não tem uma conta?' : 'Já tem uma conta?'}
+                {' '}
+                <a href="#" onClick={toggleMode} className="font-medium text-white hover:text-blue-300 transition-colors">
+                    {mode === 'login' ? 'Crie uma' : 'Faça login'}
                 </a>
             </p>
         </div>
     );
 };
 
-// Export as default components
 const LoginPage = {
     LoginForm,
-    VideoBackground
 };
 
 export default LoginPage;
