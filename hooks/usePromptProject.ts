@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule, RestricoesModule, FluxosModule, Fluxo } from '../types';
+import { PromptProject, ObjetivoModule, PersonaModule, Variavel, AnatomiaModule, RestricoesModule, FluxosModule, Fluxo, FerramentasModule } from '../types';
 import { LEVELS } from '../data/levels';
 
 const initialProjectState: PromptProject = {
@@ -13,125 +13,49 @@ const initialProjectState: PromptProject = {
   achievements: [],
   totalProgress: 0,
   modules: {
-    objetivo: {
-      nomeAssistente: '',
-      missao: '',
-      isUnlocked: true,
-      isCompleted: false,
-      completionScore: 0,
-    },
-    persona: {
-      postura: '',
-      tom: '',
-      atitude: '',
-      empatia: '',
-      genero: 'neutro',
-      linguagemModos: '',
-      isUnlocked: false,
-      isCompleted: false,
-      completionScore: 0,
-    },
-    variaveis: {
-      items: [{ id: 'initial-var-1', key: '', description: '' }],
-      isUnlocked: false,
-      isCompleted: false,
-      completionScore: 0,
-    },
-    anatomia: {
-      tamanhoMensagem: null,
-      usarEmojis: false,
-      usarMarkdown: false,
-      regraCustomizada: '',
-      isUnlocked: false,
-      isCompleted: false,
-      completionScore: 0,
-    },
-    restricoes: {
-      regrasProibidas: '',
-      regrasObrigatorias: '',
-      isUnlocked: false,
-      isCompleted: false,
-      completionScore: 0,
-    },
-    fluxos: {
-      items: [{ id: 'initial-flow-1', nome: '', passos: '' }],
-      isUnlocked: false,
-      isCompleted: false,
-      completionScore: 0,
-    }
+    objetivo: { nomeAssistente: '', missao: '', isUnlocked: true, isCompleted: false, completionScore: 0 },
+    persona: { postura: '', tom: '', atitude: '', empatia: '', genero: 'neutro', linguagemModos: '', isUnlocked: false, isCompleted: false, completionScore: 0 },
+    variaveis: { items: [{ id: 'initial-var-1', key: '', description: '' }], isUnlocked: false, isCompleted: false, completionScore: 0 },
+    anatomia: { tamanhoMensagem: null, usarEmojis: false, usarMarkdown: false, regraCustomizada: '', isUnlocked: false, isCompleted: false, completionScore: 0 },
+    restricoes: { regrasProibidas: '', regrasObrigatorias: '', isUnlocked: false, isCompleted: false, completionScore: 0 },
+    fluxos: { items: [{ id: 'initial-flow-1', nome: '', passos: '' }], isUnlocked: false, isCompleted: false, completionScore: 0 },
+    ferramentas: { items: [{ id: 'initial-tool-1', nome: '', descricao: '' }], isUnlocked: false, isCompleted: false, completionScore: 0 }
   },
 };
 
 export const usePromptProject = () => {
   const [project, setProject] = useState<PromptProject>(initialProjectState);
 
-  const updateObjetivoField = (field: keyof ObjetivoModule, value: string) => {
+  // ... (funções existentes: updateObjetivoField, updatePersonaField, etc.)
+  const updateObjetivoField = (field: keyof ObjetivoModule, value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, objetivo: { ...prev.modules.objetivo, [field]: value } } }));
+  const updatePersonaField = (field: keyof PersonaModule, value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, persona: { ...prev.modules.persona, [field]: value } } }));
+  const addVariavel = () => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: [...prev.modules.variaveis.items, { id: new Date().toISOString(), key: '', description: '' }] } } }));
+  const updateVariavel = (id: string, field: 'key' | 'description', value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.map(item => item.id === id ? { ...item, [field]: value } : item) } } }));
+  const removeVariavel = (id: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.filter(item => item.id !== id) } } }));
+  const updateAnatomiaField = (field: keyof AnatomiaModule, value: any) => setProject(prev => ({ ...prev, modules: { ...prev.modules, anatomia: { ...prev.modules.anatomia, [field]: value } } }));
+  const updateRestricoesField = (field: keyof RestricoesModule, value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, restricoes: { ...prev.modules.restricoes, [field]: value } } }));
+  const addFluxo = () => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: [...prev.modules.fluxos.items, { id: new Date().toISOString(), nome: '', passos: '' }] } } }));
+  const updateFluxo = (id: string, field: 'nome' | 'passos', value: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.map(item => item.id === id ? { ...item, [field]: value } : item) } } }));
+  const removeFluxo = (id: string) => setProject(prev => ({ ...prev, modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.filter(item => item.id !== id) } } }));
+
+  const addFerramenta = () => {
     setProject(prev => ({
       ...prev,
-      modules: { ...prev.modules, objetivo: { ...prev.modules.objetivo, [field]: value } },
+      modules: { ...prev.modules, ferramentas: { ...prev.modules.ferramentas, items: [...prev.modules.ferramentas.items, { id: new Date().toISOString(), nome: '', descricao: '' }] } }
     }));
   };
 
-  const updatePersonaField = (field: keyof PersonaModule, value: any) => {
+  const updateFerramenta = (id: string, field: 'nome' | 'descricao', value: string) => {
     setProject(prev => ({
       ...prev,
-      modules: { ...prev.modules, persona: { ...prev.modules.persona, [field]: value } },
+      modules: { ...prev.modules, ferramentas: { ...prev.modules.ferramentas, items: prev.modules.ferramentas.items.map(item => item.id === id ? { ...item, [field]: value } : item) } }
     }));
   };
 
-  const addVariavel = () => {
+  const removeFerramenta = (id: string) => {
     setProject(prev => ({
       ...prev,
-      modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: [...prev.modules.variaveis.items, { id: new Date().toISOString(), key: '', description: '' }] } }
-    }));
-  };
-
-  const updateVariavel = (id: string, field: 'key' | 'description', value: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.map(item => item.id === id ? { ...item, [field]: value } : item) } }
-    }));
-  };
-
-  const removeVariavel = (id: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, variaveis: { ...prev.modules.variaveis, items: prev.modules.variaveis.items.filter(item => item.id !== id) } }
-    }));
-  };
-
-  const updateAnatomiaField = (field: keyof AnatomiaModule, value: any) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, anatomia: { ...prev.modules.anatomia, [field]: value } },
-    }));
-  };
-
-  const updateRestricoesField = (field: keyof RestricoesModule, value: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, restricoes: { ...prev.modules.restricoes, [field]: value } },
-    }));
-  };
-
-  const addFluxo = () => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: [...prev.modules.fluxos.items, { id: new Date().toISOString(), nome: '', passos: '' }] } }
-    }));
-  };
-
-  const updateFluxo = (id: string, field: 'nome' | 'passos', value: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.map(item => item.id === id ? { ...item, [field]: value } : item) } }
-    }));
-  };
-
-  const removeFluxo = (id: string) => {
-    setProject(prev => ({
-      ...prev,
-      modules: { ...prev.modules, fluxos: { ...prev.modules.fluxos, items: prev.modules.fluxos.items.filter(item => item.id !== id) } }
+      modules: { ...prev.modules, ferramentas: { ...prev.modules.ferramentas, items: prev.modules.ferramentas.items.filter(item => item.id !== id) } }
     }));
   };
 
@@ -144,61 +68,56 @@ export const usePromptProject = () => {
 
     switch (project.currentLevel) {
       case 1:
-        const { nomeAssistente, missao } = project.modules.objetivo;
-        if (nomeAssistente.trim() !== '' && missao.trim().length >= 20) score = 100;
-        else if (nomeAssistente.trim() !== '' || missao.trim().length >= 20) score = 50;
-        canAdvance = score >= currentLevelData.minScore;
+        canAdvance = project.modules.objetivo.nomeAssistente.trim() !== '' && project.modules.objetivo.missao.trim().length >= 20;
+        score = canAdvance ? 100 : 50;
         break;
-      
       case 2:
-        const { postura, tom } = project.modules.persona;
-        if (postura.trim() !== '' && tom.trim() !== '') score = 100;
-        else if (postura.trim() !== '' || tom.trim() !== '') score = 60;
-        canAdvance = score >= currentLevelData.minScore;
+        canAdvance = project.modules.persona.postura.trim() !== '' && project.modules.persona.tom.trim() !== '';
+        score = canAdvance ? 100 : 50;
         break;
-
       case 3:
-        const validItems = project.modules.variaveis.items.filter(item => item.key.trim() !== '' && item.description.trim() !== '');
-        if (validItems.length >= 2) score = 100;
-        else if (validItems.length === 1) score = 50;
-        canAdvance = score >= currentLevelData.minScore;
+        const validVars = project.modules.variaveis.items.filter(i => i.key.trim() !== '' && i.description.trim() !== '').length;
+        canAdvance = validVars >= 2;
+        score = validVars >= 2 ? 100 : (validVars === 1 ? 50 : 0);
         break;
-
       case 4:
         const { tamanhoMensagem, usarEmojis, usarMarkdown, regraCustomizada } = project.modules.anatomia;
-        const isSizeSelected = tamanhoMensagem !== null;
-        const isRuleDefined = usarEmojis || usarMarkdown || regraCustomizada.trim() !== '';
-        if (isSizeSelected && isRuleDefined) score = 100;
-        else if (isSizeSelected || isRuleDefined) score = 50;
-        canAdvance = score >= currentLevelData.minScore;
+        canAdvance = tamanhoMensagem !== null && (usarEmojis || usarMarkdown || regraCustomizada.trim() !== '');
+        score = canAdvance ? 100 : 50;
         break;
-      
       case 5:
-        const { regrasProibidas } = project.modules.restricoes;
-        if (regrasProibidas.trim() !== '') score = 100;
-        canAdvance = score >= currentLevelData.minScore;
+        canAdvance = project.modules.restricoes.regrasProibidas.trim() !== '';
+        score = canAdvance ? 100 : 0;
         break;
-
       case 6:
-        const validFlows = project.modules.fluxos.items.filter(item => item.nome.trim() !== '' && item.passos.trim() !== '');
-        if (validFlows.length >= 1) score = 100;
-        canAdvance = score >= currentLevelData.minScore;
+        const validFlows = project.modules.fluxos.items.filter(i => i.nome.trim() !== '' && i.passos.trim() !== '').length;
+        canAdvance = validFlows >= 1;
+        score = canAdvance ? 100 : 0;
+        break;
+      case 7:
+        const validTools = project.modules.ferramentas.items.filter(i => i.nome.trim() !== '' && i.descricao.trim() !== '').length;
+        canAdvance = validTools >= 1;
+        score = canAdvance ? 100 : 0;
+        break;
+      case 8:
+        canAdvance = true; // Nível final, sempre pode "avançar" (concluir)
+        score = 100;
         break;
     }
 
-    if (canAdvance) {
+    if (canAdvance || score >= currentLevelData.minScore) {
       setProject(prev => {
         const nextLevel = prev.currentLevel + 1;
-        const nextModuleKey = Object.keys(prev.modules)[nextLevel - 1] as keyof typeof prev.modules;
+        const nextModuleKey = Object.keys(prev.modules)[nextLevel - 2] as keyof typeof prev.modules;
         
         return {
           ...prev,
-          currentLevel: nextLevel,
+          currentLevel: nextLevel > LEVELS.length ? prev.currentLevel : nextLevel,
           completedLevels: [...new Set([...prev.completedLevels, prev.currentLevel])],
           levelScores: { ...prev.levelScores, [prev.currentLevel]: score },
           modules: {
             ...prev.modules,
-            ...(nextModuleKey && { 
+            ...(nextModuleKey && nextLevel <= Object.keys(prev.modules).length + 1 && { 
               [nextModuleKey]: { ...prev.modules[nextModuleKey], isUnlocked: true }
             })
           }
@@ -209,5 +128,5 @@ export const usePromptProject = () => {
     }
   };
 
-  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, updateRestricoesField, addFluxo, updateFluxo, removeFluxo, completeAndAdvanceLevel };
+  return { project, updateObjetivoField, updatePersonaField, addVariavel, updateVariavel, removeVariavel, updateAnatomiaField, updateRestricoesField, addFluxo, updateFluxo, removeFluxo, addFerramenta, updateFerramenta, removeFerramenta, completeAndAdvanceLevel };
 };

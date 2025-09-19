@@ -20,6 +20,9 @@ export default function PromptBuilderPage() {
     addFluxo,
     updateFluxo,
     removeFluxo,
+    addFerramenta,
+    updateFerramenta,
+    removeFerramenta,
     completeAndAdvanceLevel 
   } = usePromptProject();
 
@@ -69,6 +72,9 @@ export default function PromptBuilderPage() {
               onAddFluxo={addFluxo}
               onUpdateFluxo={updateFluxo}
               onRemoveFluxo={removeFluxo}
+              onAddFerramenta={addFerramenta}
+              onUpdateFerramenta={updateFerramenta}
+              onRemoveFerramenta={removeFerramenta}
               onNextLevel={completeAndAdvanceLevel}
               onImproveText={handleImproveText}
             />

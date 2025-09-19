@@ -62,6 +62,16 @@ export interface FluxosModule {
   items: Fluxo[];
 }
 
+export interface Ferramenta {
+  id: string;
+  nome: string;
+  descricao: string;
+}
+
+export interface FerramentasModule {
+  items: Ferramenta[];
+}
+
 export interface PromptProject {
   id: string;
   name: string;
@@ -78,7 +88,7 @@ export interface PromptProject {
     anatomia: AnatomiaModule & ModuleProgress;
     restricoes: RestricoesModule & ModuleProgress;
     fluxos: FluxosModule & ModuleProgress;
-    // Other modules will be added later
+    ferramentas: FerramentasModule & ModuleProgress;
   };
 }
 
