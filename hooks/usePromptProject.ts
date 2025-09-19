@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { PromptProject, ObjetivoModule, PersonaModule } from '../types';
+import { LEVELS } from '../data/levels';
 
 const initialProjectState: PromptProject = {
   id: new Date().toISOString(),
@@ -41,25 +42,81 @@ export const usePromptProject = () => {
       ...prev,
       modules: {
         ...prev.modules,
-        objetivo: {
-          ...prev.modules.objetivo,
-          [field]: value,
-        },
+        objetivo: { ...prev.modules.objetivo, [field]: value },
       },
     }));
   };
-  
-  const goToNextLevel = () => {
-    setProject(prev => {
-      const nextLevel = prev.currentLevel + 1;
-      return {
-        ...prev,
-        currentLevel: nextLevel,
-        completedLevels: [...prev.completedLevels, prev.currentLevel],
-        // Logic to unlock next module can be added here
-      };
-    });
+
+  const updatePersonaField = (field: keyof PersonaModule, value: string | 'neutro' | 'feminino' | 'masculino') => {
+    setProject(prev => ({
+      ...prev,
+      modules: {
+        ...prev.modules,
+        persona: { ...prev.modules.persona, [field]: value },
+      },
+    }));
   };
 
-  return { project, updateObjetivoField, goToNextLevel, setProject };
+  const completeAndAdvanceLevel = () => {
+    const currentLevelData = LEVELS.find(l => l.id === project.currentLevel);
+    if (!currentLevelData) return;
+
+    let score = 0;
+    let canAdvance = false;
+
+    // Validação e Score para cada nível
+    switch (project.currentLevel) {
+      case 1:
+        const { nomeAssistente, missao } = project.modules.objetivo;
+        const isNameValid = nomeAssistente.trim() !== '';
+        const isMissaoValid = missao.trim().length >= 20;
+        if (isNameValid && isMissaoValid) {
+          score = 100; // Simples, mas podemos refinar depois
+        } else if (isNameValid || isMissaoValid) {
+          score = 50;
+        }
+        canAdvance = score >= currentLevelData.minScore;
+        break;
+      
+      case 2:
+        const { postura, tom, genero } = project.modules.persona;
+        const isPosturaValid = postura.trim() !== '';
+        const isTomValid = tom.trim() !== '';
+        const isGeneroValid = genero !== null;
+        if (isPosturaValid && isTomValid && isGeneroValid) {
+          score = 100;
+        } else if (isPosturaValid || isTomValid) {
+          score = 60;
+        }
+        canAdvance = score >= currentLevelData.minScore;
+        break;
+
+      // Adicionar validações para outros níveis aqui
+    }
+
+    if (canAdvance) {
+      setProject(prev => {
+        const nextLevel = prev.currentLevel + 1;
+        const nextModuleKey = Object.keys(prev.modules)[nextLevel - 1];
+        
+        return {
+          ...prev,
+          currentLevel: nextLevel,
+          completedLevels: [...new Set([...prev.completedLevels, prev.currentLevel])],
+          levelScores: { ...prev.levelScores, [prev.currentLevel]: score },
+          modules: {
+            ...prev.modules,
+            ...(nextModuleKey && { 
+              [nextModuleKey]: { ...prev.modules[nextModuleKey as keyof typeof prev.modules], isUnlocked: true }
+            })
+          }
+        };
+      });
+    } else {
+      // Futuramente, podemos adicionar um alerta/toast para o usuário aqui
+      console.log(`Validação falhou para o nível ${project.currentLevel}. Score: ${score}`);
+    }
+  };
+
+  return { project, setProject, updateObjetivoField, updatePersonaField, completeAndAdvanceLevel };
 };

@@ -6,12 +6,12 @@ import LevelSidebar from '../../components/prompt-builder/LevelSidebar';
 import LevelContent from '../../components/prompt-builder/LevelContent';
 import AnimatedGradientBackground from '../../components/AnimatedGradientBackground';
 import { supabase } from '../../src/integrations/supabase/client';
-import { ObjetivoModule } from '../../types';
+import { ObjetivoModule, PersonaModule } from '../../types';
 
 export default function PromptBuilderPage() {
-  const { project, updateObjetivoField, goToNextLevel, setProject } = usePromptProject();
+  const { project, updateObjetivoField, updatePersonaField, completeAndAdvanceLevel } = usePromptProject();
 
-  const handleImproveText = async (field: string, value: string) => {
+  const handleImproveText = async (level: number, field: string, value: string) => {
     try {
       const { data, error } = await supabase.functions.invoke('improve-text', {
         body: { field, value },
@@ -20,13 +20,14 @@ export default function PromptBuilderPage() {
       if (error) throw error;
 
       if (data.improvedText) {
-        // This logic assumes the field belongs to the 'objetivo' module.
-        // It will need to be expanded for other levels.
-        updateObjetivoField(field as keyof ObjetivoModule, data.improvedText);
+        if (level === 1) {
+          updateObjetivoField(field as keyof ObjetivoModule, data.improvedText);
+        } else if (level === 2) {
+          updatePersonaField(field as keyof PersonaModule, data.improvedText);
+        }
       }
     } catch (error) {
       console.error("Error improving text:", error);
-      // Here you could show a toast notification to the user
     }
   };
 
@@ -53,7 +54,8 @@ export default function PromptBuilderPage() {
             <LevelContent 
               project={project}
               onUpdateObjetivo={updateObjetivoField}
-              onNextLevel={goToNextLevel}
+              onUpdatePersona={updatePersonaField}
+              onNextLevel={completeAndAdvanceLevel}
               onImproveText={handleImproveText}
             />
           </section>

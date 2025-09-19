@@ -13,7 +13,8 @@ interface Level1ObjetivoProps {
 }
 
 const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext, onImprove }) => {
-  const isComplete = data.nomeAssistente.trim() !== '' && data.missao.trim() !== '';
+  // A validação agora é feita no hook, mas podemos manter isso para o estado do botão
+  const isComplete = data.nomeAssistente.trim() !== '' && data.missao.trim().length >= 20;
 
   return (
     <div className="space-y-8">
@@ -31,7 +32,7 @@ const Level1Objetivo: React.FC<Level1ObjetivoProps> = ({ data, onUpdate, onNext,
           onImprove={() => onImprove('nomeAssistente', data.nomeAssistente)}
         />
         <StyledTextarea
-          label="Missão Principal"
+          label="Missão Principal (mínimo 20 caracteres)"
           value={data.missao}
           onChange={(e) => onUpdate('missao', e.target.value)}
           placeholder="Descreva em uma ou duas frases o que o assistente deve fazer. Ex: 'Minha missão é ajudar os clientes a encontrarem o produto certo, entendendo suas necessidades e oferecendo recomendações personalizadas.'"
