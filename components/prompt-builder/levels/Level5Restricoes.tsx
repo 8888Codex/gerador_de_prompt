@@ -41,10 +41,10 @@ const Level5Restricoes: React.FC<Level5RestricoesProps> = ({ data, onUpdate, onN
       </div>
 
       <ExampleBox>
-        <p>As restrições são as &quot;leis&quot; do seu assistente. Elas garantem consistência e segurança.</p>
+        <p>{'As restrições são as "leis" do seu assistente. Elas garantem consistência e segurança.'}</p>
         <ul>
           <li><strong>Regra Proibida:</strong> <code>Nunca devo afirmar que sou humano. Sou uma IA.</code></li>
-          <li><strong>Regra Obrigatória:</strong> <code>Sempre que eu não souber a resposta, devo dizer &apos;Não tenho essa informação no momento, mas posso buscar para você&apos;.</code></li>
+          <li><strong>Regra Obrigatória:</strong> <code>{"Sempre que eu não souber a resposta, devo dizer 'Não tenho essa informação no momento, mas posso buscar para você'."}</code></li>
         </ul>
       </ExampleBox>
 

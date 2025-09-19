@@ -23,7 +23,7 @@ const Level3Variaveis: React.FC<Level3VariaveisProps> = ({ data, onAdd, onUpdate
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold text-white">🧠 Nível 3: Variáveis Persistentes</h2>
-        <p className="text-gray-400 mt-1">Defina a &quot;memória&quot; do assistente. Estas são informações que ele sempre lembrará.</p>
+        <p className="text-gray-400 mt-1">{'Defina a "memória" do assistente. Estas são informações que ele sempre lembrará.'}</p>
       </div>
 
       <div className="space-y-4">
