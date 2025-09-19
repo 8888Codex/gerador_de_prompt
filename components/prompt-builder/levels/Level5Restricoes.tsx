@@ -8,7 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level5RestricoesProps {
   data: PromptProject['modules']['restricoes'];
-  onUpdate: (field: keyof (RestricoesModule & ModuleProgress), value: string) => void;
+  onUpdate: (field: keyof PromptProject['modules']['restricoes'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof RestricoesModule, value: string) => void;
 }

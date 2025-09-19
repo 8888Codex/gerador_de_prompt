@@ -8,7 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level2PersonaProps {
   data: PromptProject['modules']['persona'];
-  onUpdate: (field: keyof (PersonaModule & ModuleProgress), value: any) => void;
+  onUpdate: (field: keyof PromptProject['modules']['persona'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof PersonaModule, value: string) => void;
 }

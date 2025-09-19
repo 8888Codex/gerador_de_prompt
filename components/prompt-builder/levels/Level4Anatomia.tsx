@@ -8,7 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level4AnatomiaProps {
   data: PromptProject['modules']['anatomia'];
-  onUpdate: (field: keyof (AnatomiaModule & ModuleProgress), value: any) => void;
+  onUpdate: (field: keyof PromptProject['modules']['anatomia'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof AnatomiaModule, value: string) => void;
 }

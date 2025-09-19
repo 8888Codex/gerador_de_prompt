@@ -26,8 +26,8 @@ const initialProjectState: PromptProject = {
 export const usePromptProject = () => {
   const [project, setProject] = useState<PromptProject>(initialProjectState);
 
-  // Corrigindo os tipos para aceitar TODOS os campos dos módulos (incluindo ModuleProgress)
-  const updateObjetivoField = (field: keyof (ObjetivoModule & import('../types').ModuleProgress), value: any) => {
+  // Usando exatamente os mesmos tipos que o PromptProject define
+  const updateObjetivoField = (field: keyof PromptProject['modules']['objetivo'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
       modules: { 
@@ -37,7 +37,7 @@ export const usePromptProject = () => {
     }));
   };
 
-  const updatePersonaField = (field: keyof (PersonaModule & import('../types').ModuleProgress), value: any) => {
+  const updatePersonaField = (field: keyof PromptProject['modules']['persona'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
       modules: { 
@@ -47,7 +47,7 @@ export const usePromptProject = () => {
     }));
   };
 
-  const updateAnatomiaField = (field: keyof (AnatomiaModule & import('../types').ModuleProgress), value: any) => {
+  const updateAnatomiaField = (field: keyof PromptProject['modules']['anatomia'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
       modules: { 
@@ -57,7 +57,7 @@ export const usePromptProject = () => {
     }));
   };
 
-  const updateRestricoesField = (field: keyof (RestricoesModule & import('../types').ModuleProgress), value: any) => {
+  const updateRestricoesField = (field: keyof PromptProject['modules']['restricoes'], value: any) => {
     setProject(prev => ({ 
       ...prev, 
       modules: { 

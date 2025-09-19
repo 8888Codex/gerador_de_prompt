@@ -8,7 +8,7 @@ import ExampleBox from '../ExampleBox';
 
 interface Level1ObjetivoProps {
   data: PromptProject['modules']['objetivo'];
-  onUpdate: (field: keyof (ObjetivoModule & ModuleProgress), value: string) => void;
+  onUpdate: (field: keyof PromptProject['modules']['objetivo'], value: any) => void;
   onNext: () => void;
   onImprove: (field: keyof ObjetivoModule, value: string) => void;
 }
