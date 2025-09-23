@@ -20,6 +20,68 @@ type MoodEntry = {
   timestamp: Date;
 };
 
+const wellnessContent = [
+  {
+    id: '1',
+    type: 'audio',
+    title: 'Respiração Diafragmática',
+    category: 'Respiração',
+    duration: '3 min',
+  },
+  {
+    id: '2',
+    type: 'audio',
+    title: 'Meditação para Foco',
+    category: 'Meditação',
+    duration: '5 min',
+  },
+  {
+    id: '3',
+    type: 'text',
+    title: 'Entendendo a Ansiedade',
+    category: 'Ansiedade',
+  },
+  {
+    id: '4',
+    type: 'podcast',
+    title: 'Pílula de Calma #1',
+    category: 'Relaxamento',
+    duration: '2 min',
+  },
+  {
+    id: '5',
+    type: 'text',
+    title: 'Construindo sua Autoestima',
+    category: 'Autoestima',
+  },
+  {
+    id: '6',
+    type: 'audio',
+    title: 'Relaxamento Progressivo',
+    category: 'Relaxamento',
+    duration: '7 min',
+  },
+  {
+    id: '7',
+    type: 'text',
+    title: 'Dicas para Manter o Foco',
+    category: 'Foco',
+  },
+];
+
+const getContentIcon = (type: 'audio' | 'text' | 'podcast') => {
+  switch (type) {
+    case 'audio':
+      return 'headphones';
+    case 'text':
+      return 'book-open-variant';
+    case 'podcast':
+      return 'podcast';
+    default:
+      return 'star-outline';
+  }
+};
+
 export default function BemEstarScreen() {
   const [selectedMood, setSelectedMood] = useState<MoodOption | null>(null);
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
@@ -78,6 +140,24 @@ export default function BemEstarScreen() {
               </View>
             ))
           )}
+        </View>
+
+        <View style={styles.wellnessContainer}>
+          <Text style={styles.wellnessTitle}>Conteúdos para seu Bem-estar</Text>
+          {wellnessContent.map((item) => (
+            <Pressable key={item.id} style={styles.contentCard}>
+              <View style={styles.iconContainer}>
+                <MaterialCommunityIcons name={getContentIcon(item.type as 'audio' | 'text' | 'podcast')} size={24} color="#6A5ACD" />
+              </View>
+              <View style={styles.cardTextContainer}>
+                <Text style={styles.cardTitle}>{item.title}</Text>
+                <Text style={styles.cardCategory}>{item.category}</Text>
+              </View>
+              {item.duration && (
+                <Text style={styles.cardDuration}>{item.duration}</Text>
+              )}
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -171,5 +251,58 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#888',
     marginTop: 20,
+  },
+  wellnessContainer: {
+    width: '100%',
+    marginTop: 20,
+  },
+  wellnessTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#4A4A4A',
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EAEAEA',
+    paddingBottom: 5,
+  },
+  contentCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  iconContainer: {
+    backgroundColor: '#F5F3FF',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  cardTextContainer: {
+    flex: 1,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#4A4A4A',
+  },
+  cardCategory: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 2,
+  },
+  cardDuration: {
+    fontSize: 12,
+    color: '#6A5ACD',
+    fontWeight: '600',
   },
 });
