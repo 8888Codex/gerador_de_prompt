@@ -47,18 +47,30 @@ export default function HomeScreen() {
 
   const handleSendMessage = () => {
     if (message.trim().length > 0) {
-      const newMessage: Message = {
-        id: Date.now().toString(),
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
         text: message,
         isUser: true,
       };
-      setMessages(prevMessages => [...prevMessages, newMessage]);
+      setMessages(prevMessages => [...prevMessages, userMessage]);
       setMessage("");
+
+      // Simulate bot response after a short delay
+      setTimeout(() => {
+        const botResponse: Message = {
+          id: `bot-${Date.now()}`,
+          text: "Entendido. Agradeço por compartilhar. Como você se sente sobre isso?",
+          isUser: false,
+        };
+        setMessages(prevMessages => [...prevMessages, botResponse]);
+      }, 1000);
     }
   };
 
   const handleSuggestionPress = (suggestion: string) => {
     setMessage(suggestion);
+    // Optionally, send the message directly
+    // handleSendMessage(); 
   };
 
   return (
@@ -105,6 +117,7 @@ export default function HomeScreen() {
             onChangeText={setMessage}
             placeholder="Digite sua mensagem..."
             placeholderTextColor="#999"
+            onSubmitEditing={handleSendMessage} // Send on return key
           />
           <Pressable style={styles.sendButton} onPress={handleSendMessage}>
             <Text style={styles.sendButtonText}>Enviar</Text>
