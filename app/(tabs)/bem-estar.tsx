@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { wellnessContent, getContentIcon } from '../../data/wellnessContent';
+import { wellnessContent, getContentIcon, WellnessContent } from '../../data/wellnessContent';
 
 type MoodOption = {
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
@@ -22,9 +22,25 @@ type MoodEntry = {
   timestamp: Date;
 };
 
+const ContentCard = ({ item }: { item: WellnessContent }) => (
+  <Pressable style={styles.contentCard} onPress={() => router.push(`/content/${item.id}`)}>
+    <View style={styles.iconContainer}>
+      <MaterialCommunityIcons name={getContentIcon(item.type as 'audio' | 'text' | 'podcast')} size={24} color="#6A5ACD" />
+    </View>
+    <View style={styles.cardTextContainer}>
+      <Text style={styles.cardTitle}>{item.title}</Text>
+      <Text style={styles.cardCategory}>{item.category}</Text>
+    </View>
+    {item.duration && (
+      <Text style={styles.cardDuration}>{item.duration}</Text>
+    )}
+  </Pressable>
+);
+
 export default function BemEstarScreen() {
   const [selectedMood, setSelectedMood] = useState<MoodOption | null>(null);
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
+  const [suggestedContent, setSuggestedContent] = useState<WellnessContent[]>([]);
 
   const handleSaveMood = () => {
     if (selectedMood) {
@@ -33,6 +49,13 @@ export default function BemEstarScreen() {
         timestamp: new Date(),
       };
       setMoodHistory([newEntry, ...moodHistory]);
+      
+      // Find suggested content
+      const suggestions = wellnessContent.filter(item => 
+        item.relatedMoods?.includes(selectedMood.label)
+      );
+      setSuggestedContent(suggestions);
+
       setSelectedMood(null); // Reset selection
     }
   };
@@ -66,6 +89,15 @@ export default function BemEstarScreen() {
           <Text style={styles.saveButtonText}>Salvar Humor</Text>
         </Pressable>
 
+        {suggestedContent.length > 0 && (
+          <View style={styles.wellnessContainer}>
+            <Text style={styles.wellnessTitle}>Sugestões para você</Text>
+            {suggestedContent.map((item) => (
+              <ContentCard key={`sugg-${item.id}`} item={item} />
+            ))}
+          </View>
+        )}
+
         <View style={styles.historyContainer}>
           <Text style={styles.historyTitle}>Seu Histórico</Text>
           {moodHistory.length === 0 ? (
@@ -83,20 +115,9 @@ export default function BemEstarScreen() {
         </View>
 
         <View style={styles.wellnessContainer}>
-          <Text style={styles.wellnessTitle}>Conteúdos para seu Bem-estar</Text>
+          <Text style={styles.wellnessTitle}>Explorar Conteúdos</Text>
           {wellnessContent.map((item) => (
-            <Pressable key={item.id} style={styles.contentCard} onPress={() => router.push(`/content/${item.id}`)}>
-              <View style={styles.iconContainer}>
-                <MaterialCommunityIcons name={getContentIcon(item.type as 'audio' | 'text' | 'podcast')} size={24} color="#6A5ACD" />
-              </View>
-              <View style={styles.cardTextContainer}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardCategory}>{item.category}</Text>
-              </View>
-              {item.duration && (
-                <Text style={styles.cardDuration}>{item.duration}</Text>
-              )}
-            </Pressable>
+            <ContentCard key={item.id} item={item} />
           ))}
         </View>
       </ScrollView>
@@ -164,6 +185,7 @@ const styles = StyleSheet.create({
   },
   historyContainer: {
     width: '100%',
+    marginBottom: 20,
   },
   historyTitle: {
     fontSize: 20,
