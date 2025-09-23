@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { wellnessContent, WellnessContent } from '../../data/wellnessContent';
+import { wellnessContent } from '../../data/wellnessContent';
 import MoodChart from '../../components/MoodChart';
 import ContentCard from '../../components/ContentCard';
-
-type MoodOption = {
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-  label: string;
-};
+import { useMoodHistory, MoodOption } from '../../hooks/useMoodHistory';
 
 const moodOptions: MoodOption[] = [
   { icon: 'emoticon-happy-outline', label: 'Feliz' },
@@ -19,63 +14,17 @@ const moodOptions: MoodOption[] = [
   { icon: 'emoticon-cool-outline', label: 'Relaxado' },
 ];
 
-type MoodEntry = {
-  mood: MoodOption;
-  timestamp: Date;
-};
-
 const allCategories = ['Todos', ...Array.from(new Set(wellnessContent.map(item => item.category)))];
 
 export default function BemEstarScreen() {
   const [selectedMood, setSelectedMood] = useState<MoodOption | null>(null);
-  const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
-  const isInitialMount = useRef(true);
+  const { moodHistory, addMoodEntry } = useMoodHistory();
   const [selectedCategory, setSelectedCategory] = useState('Todos');
-
-  // Load mood history from storage on component mount
-  useEffect(() => {
-    const loadMoodHistory = async () => {
-      try {
-        const storedHistory = await AsyncStorage.getItem('moodHistory');
-        if (storedHistory !== null) {
-          const parsedHistory = JSON.parse(storedHistory).map((entry: any) => ({
-            ...entry,
-            timestamp: new Date(entry.timestamp),
-          }));
-          setMoodHistory(parsedHistory);
-        }
-      } catch (error) {
-        console.error('Failed to load mood history.', error);
-      }
-    };
-    loadMoodHistory();
-  }, []);
-
-  // Save mood history to storage whenever it changes
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-    const saveMoodHistory = async () => {
-      try {
-        await AsyncStorage.setItem('moodHistory', JSON.stringify(moodHistory));
-      } catch (error) {
-        console.error('Failed to save mood history.', error);
-      }
-    };
-    saveMoodHistory();
-  }, [moodHistory]);
 
   const handleSaveMood = () => {
     if (selectedMood) {
-      const newEntry: MoodEntry = {
-        mood: selectedMood,
-        timestamp: new Date(),
-      };
-      setMoodHistory([newEntry, ...moodHistory]);
+      addMoodEntry(selectedMood);
       
-      // Suggest a category based on mood
       const suggestedCategory = wellnessContent.find(item => 
         item.relatedMoods?.includes(selectedMood.label)
       )?.category;

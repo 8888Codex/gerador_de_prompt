@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,9 @@ import {
   FlatList,
 } from "react-native";
 import * as Linking from "expo-linking";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBubble from "../../components/MessageBubble";
-import { getBotResponse } from "../../data/botResponses";
 import TypingIndicator from "../../components/TypingIndicator";
+import { useChatMessages, Message } from "../../hooks/useChatMessages";
 
 const CVV_PHONE_NUMBER = "188";
 
@@ -25,57 +24,10 @@ const suggestions = [
   "Estou ansioso(a)",
 ];
 
-type Message = {
-  id: string;
-  text: string;
-  isUser: boolean;
-};
-
-const initialMessages: Message[] = [
-    {
-        id: 'welcome-1',
-        text: 'Olá! Sou sua companheira de bem-estar. Sinta-se à vontade para compartilhar o que estiver em sua mente.',
-        isUser: false,
-    }
-]
-
-export default function HomeScreen() {
+export default function ChatScreen() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [isTyping, setIsTyping] = useState(false);
-  const flatListRef = useRef<FlatList>(null);
-  const isInitialMount = useRef(true);
-
-  // Load messages from storage on component mount
-  useEffect(() => {
-    const loadMessages = async () => {
-      try {
-        const storedMessages = await AsyncStorage.getItem('chatMessages');
-        if (storedMessages !== null) {
-          setMessages(JSON.parse(storedMessages));
-        }
-      } catch (error) {
-        console.error('Failed to load messages.', error);
-      }
-    };
-    loadMessages();
-  }, []);
-
-  // Save messages to storage whenever they change
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-    const saveMessages = async () => {
-      try {
-        await AsyncStorage.setItem('chatMessages', JSON.stringify(messages));
-      } catch (error) {
-        console.error('Failed to save messages.', error);
-      }
-    };
-    saveMessages();
-  }, [messages]);
+  const { messages, isTyping, sendMessage } = useChatMessages();
+  const flatListRef = useRef<FlatList<Message>>(null);
 
   const handleEmergencyPress = () => {
     Linking.openURL(`tel:${CVV_PHONE_NUMBER}`);
@@ -83,26 +35,8 @@ export default function HomeScreen() {
 
   const handleSendMessage = () => {
     if (message.trim().length > 0) {
-      const userMessageText = message;
-      const userMessage: Message = {
-        id: `user-${Date.now()}`,
-        text: userMessageText,
-        isUser: true,
-      };
-      setMessages(prevMessages => [...prevMessages, userMessage]);
+      sendMessage(message);
       setMessage("");
-      setIsTyping(true);
-
-      setTimeout(() => {
-        const botText = getBotResponse(userMessageText);
-        const botResponse: Message = {
-          id: `bot-${Date.now()}`,
-          text: botText,
-          isUser: false,
-        };
-        setIsTyping(false);
-        setMessages(prevMessages => [...prevMessages, botResponse]);
-      }, 1500);
     }
   };
 
