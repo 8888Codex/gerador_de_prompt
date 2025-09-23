@@ -8,10 +8,17 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from "react-native";
 import * as Linking from "expo-linking";
 
 const CVV_PHONE_NUMBER = "188";
+
+const suggestions = [
+  "Quero desabafar",
+  "Preciso de dicas",
+  "Estou ansioso(a)",
+];
 
 export default function HomeScreen() {
   const [message, setMessage] = useState("");
@@ -27,6 +34,12 @@ export default function HomeScreen() {
     }
   };
 
+  const handleSuggestionPress = (suggestion: string) => {
+    console.log("Suggestion selected:", suggestion);
+    // Futuramente, isso pode iniciar um fluxo de conversa específico
+    setMessage(suggestion);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -39,6 +52,20 @@ export default function HomeScreen() {
 
         {/* A área de mensagens do chat virá aqui no futuro */}
         <View style={styles.chatArea}></View>
+
+        <View style={styles.suggestionsContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {suggestions.map((item, index) => (
+              <Pressable
+                key={index}
+                style={styles.suggestionChip}
+                onPress={() => handleSuggestionPress(item)}
+              >
+                <Text style={styles.suggestionText}>{item}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
 
         <View style={styles.inputContainer}>
           <TextInput
@@ -83,6 +110,23 @@ const styles = StyleSheet.create({
   chatArea: {
     flex: 1,
     paddingHorizontal: 10,
+  },
+  suggestionsContainer: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+  },
+  suggestionChip: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#DCDCDC",
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    marginRight: 10,
+  },
+  suggestionText: {
+    color: "#6A5ACD",
+    fontSize: 14,
   },
   inputContainer: {
     flexDirection: "row",
