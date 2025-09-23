@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -9,8 +9,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  FlatList,
 } from "react-native";
 import * as Linking from "expo-linking";
+import MessageBubble from "../../components/MessageBubble";
 
 const CVV_PHONE_NUMBER = "188";
 
@@ -20,8 +22,24 @@ const suggestions = [
   "Estou ansioso(a)",
 ];
 
+type Message = {
+  id: string;
+  text: string;
+  isUser: boolean;
+};
+
+const initialMessages: Message[] = [
+    {
+        id: 'welcome-1',
+        text: 'Olá! Sou sua companheira de bem-estar. Sinta-se à vontade para compartilhar o que estiver em sua mente.',
+        isUser: false,
+    }
+]
+
 export default function HomeScreen() {
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const flatListRef = useRef<FlatList>(null);
 
   const handleEmergencyPress = () => {
     Linking.openURL(`tel:${CVV_PHONE_NUMBER}`);
@@ -29,14 +47,17 @@ export default function HomeScreen() {
 
   const handleSendMessage = () => {
     if (message.trim().length > 0) {
-      console.log("Message sent:", message);
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        text: message,
+        isUser: true,
+      };
+      setMessages(prevMessages => [...prevMessages, newMessage]);
       setMessage("");
     }
   };
 
   const handleSuggestionPress = (suggestion: string) => {
-    console.log("Suggestion selected:", suggestion);
-    // Futuramente, isso pode iniciar um fluxo de conversa específico
     setMessage(suggestion);
   };
 
@@ -45,13 +66,23 @@ export default function HomeScreen() {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
         <View style={styles.header}>
           <Text style={styles.greetingText}>Olá, como você está hoje?</Text>
         </View>
 
-        {/* A área de mensagens do chat virá aqui no futuro */}
-        <View style={styles.chatArea}></View>
+        <View style={styles.chatArea}>
+            <FlatList
+                ref={flatListRef}
+                data={messages}
+                renderItem={({ item }) => <MessageBubble text={item.text} isUser={item.isUser} />}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={{ paddingHorizontal: 10, paddingTop: 10 }}
+                onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+                onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            />
+        </View>
 
         <View style={styles.suggestionsContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -92,11 +123,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F5F3FF", // Tom de lilás pastel suave
+    backgroundColor: "#F5F3FF",
   },
   container: {
     flex: 1,
-    paddingBottom: 50, // Espaço para o banner de emergência não sobrepor o input
+    paddingBottom: 50,
   },
   header: {
     padding: 20,
@@ -109,7 +140,6 @@ const styles = StyleSheet.create({
   },
   chatArea: {
     flex: 1,
-    paddingHorizontal: 10,
   },
   suggestionsContainer: {
     paddingHorizontal: 10,
@@ -146,7 +176,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: "#8A2BE2", // Um roxo amigável
+    backgroundColor: "#8A2BE2",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -161,7 +191,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#6A5ACD", // Um tom mais sóbrio para o banner
+    backgroundColor: "#6A5ACD",
     paddingVertical: 15,
     alignItems: "center",
     justifyContent: "center",
