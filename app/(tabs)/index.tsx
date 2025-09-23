@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import * as Linking from "expo-linking";
 import MessageBubble from "../../components/MessageBubble";
+import { getBotResponse } from "../../data/botResponses";
 
 const CVV_PHONE_NUMBER = "188";
 
@@ -47,9 +48,10 @@ export default function HomeScreen() {
 
   const handleSendMessage = () => {
     if (message.trim().length > 0) {
+      const userMessageText = message;
       const userMessage: Message = {
         id: `user-${Date.now()}`,
-        text: message,
+        text: userMessageText,
         isUser: true,
       };
       setMessages(prevMessages => [...prevMessages, userMessage]);
@@ -57,9 +59,10 @@ export default function HomeScreen() {
 
       // Simulate bot response after a short delay
       setTimeout(() => {
+        const botText = getBotResponse(userMessageText);
         const botResponse: Message = {
           id: `bot-${Date.now()}`,
-          text: "Entendido. Agradeço por compartilhar. Como você se sente sobre isso?",
+          text: botText,
           isUser: false,
         };
         setMessages(prevMessages => [...prevMessages, botResponse]);
@@ -69,8 +72,6 @@ export default function HomeScreen() {
 
   const handleSuggestionPress = (suggestion: string) => {
     setMessage(suggestion);
-    // Optionally, send the message directly
-    // handleSendMessage(); 
   };
 
   return (
