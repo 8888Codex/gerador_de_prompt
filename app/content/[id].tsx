@@ -1,9 +1,10 @@
-import React, 'react';
+import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
-import { wellnessContent, getContentIcon } from '../../data/wellnessContent';
+import { wellnessContent } from '../../data/wellnessContent';
+import { getContentIcon } from '../../utils/contentUtils';
 
 export default function ContentDetailScreen() {
   const { id } = useLocalSearchParams();

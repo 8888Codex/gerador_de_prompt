@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { WellnessContent, getContentIcon } from '../data/wellnessContent';
+import { WellnessContent } from '../data/wellnessContent';
+import { getContentIcon } from '../utils/contentUtils';
 
 type ContentCardProps = {
   item: WellnessContent;

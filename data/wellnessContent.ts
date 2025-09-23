@@ -1,5 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 export type WellnessContent = {
   id: string;
   type: 'audio' | 'text' | 'podcast';
@@ -85,16 +83,3 @@ export const wellnessContent: WellnessContent[] = [
     relatedMoods: ['Feliz', 'Neutro'],
   }
 ];
-
-export const getContentIcon = (type: 'audio' | 'text' | 'podcast'): keyof typeof MaterialCommunityIcons.glyphMap => {
-  switch (type) {
-    case 'audio':
-      return 'headphones';
-    case 'text':
-      return 'book-open-variant';
-    case 'podcast':
-      return 'podcast';
-    default:
-      return 'star-outline';
-  }
-};
