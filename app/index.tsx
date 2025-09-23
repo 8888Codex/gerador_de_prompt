@@ -1,13 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
-import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, SafeAreaView, Pressable, Image } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 export default function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.illustrationContainer}>
-        <MaterialCommunityIcons name="head-heart-outline" size={250} color="#BCCCDC" />
+        <Image 
+          source={require('../assets/images/welcome-avatar.png')} 
+          style={styles.avatar}
+          resizeMode="contain"
+        />
       </View>
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Bem-vindo(a)!</Text>
@@ -32,6 +36,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 40,
+  },
+  avatar: {
+    width: 300,
+    height: 300,
   },
   contentContainer: {
     flex: 2,
