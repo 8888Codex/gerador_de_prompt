@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
   FlatList,
 } from "react-native";
 import * as Linking from "expo-linking";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBubble from "../../components/MessageBubble";
 import { getBotResponse } from "../../data/botResponses";
 
@@ -41,6 +42,38 @@ export default function HomeScreen() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const flatListRef = useRef<FlatList>(null);
+  const isInitialMount = useRef(true);
+
+  // Load messages from storage on component mount
+  useEffect(() => {
+    const loadMessages = async () => {
+      try {
+        const storedMessages = await AsyncStorage.getItem('chatMessages');
+        if (storedMessages !== null) {
+          setMessages(JSON.parse(storedMessages));
+        }
+      } catch (error) {
+        console.error('Failed to load messages.', error);
+      }
+    };
+    loadMessages();
+  }, []);
+
+  // Save messages to storage whenever they change
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const saveMessages = async () => {
+      try {
+        await AsyncStorage.setItem('chatMessages', JSON.stringify(messages));
+      } catch (error) {
+        console.error('Failed to save messages.', error);
+      }
+    };
+    saveMessages();
+  }, [messages]);
 
   const handleEmergencyPress = () => {
     Linking.openURL(`tel:${CVV_PHONE_NUMBER}`);
@@ -57,7 +90,6 @@ export default function HomeScreen() {
       setMessages(prevMessages => [...prevMessages, userMessage]);
       setMessage("");
 
-      // Simulate bot response after a short delay
       setTimeout(() => {
         const botText = getBotResponse(userMessageText);
         const botResponse: Message = {
@@ -118,7 +150,7 @@ export default function HomeScreen() {
             onChangeText={setMessage}
             placeholder="Digite sua mensagem..."
             placeholderTextColor="#999"
-            onSubmitEditing={handleSendMessage} // Send on return key
+            onSubmitEditing={handleSendMessage}
           />
           <Pressable style={styles.sendButton} onPress={handleSendMessage}>
             <Text style={styles.sendButtonText}>Enviar</Text>

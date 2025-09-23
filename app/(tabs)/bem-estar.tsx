@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { wellnessContent, getContentIcon, WellnessContent } from '../../data/wellnessContent';
 
 type MoodOption = {
@@ -41,6 +42,42 @@ export default function BemEstarScreen() {
   const [selectedMood, setSelectedMood] = useState<MoodOption | null>(null);
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
   const [suggestedContent, setSuggestedContent] = useState<WellnessContent[]>([]);
+  const isInitialMount = useRef(true);
+
+  // Load mood history from storage on component mount
+  useEffect(() => {
+    const loadMoodHistory = async () => {
+      try {
+        const storedHistory = await AsyncStorage.getItem('moodHistory');
+        if (storedHistory !== null) {
+          const parsedHistory = JSON.parse(storedHistory).map((entry: any) => ({
+            ...entry,
+            timestamp: new Date(entry.timestamp),
+          }));
+          setMoodHistory(parsedHistory);
+        }
+      } catch (error) {
+        console.error('Failed to load mood history.', error);
+      }
+    };
+    loadMoodHistory();
+  }, []);
+
+  // Save mood history to storage whenever it changes
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const saveMoodHistory = async () => {
+      try {
+        await AsyncStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+      } catch (error) {
+        console.error('Failed to save mood history.', error);
+      }
+    };
+    saveMoodHistory();
+  }, [moodHistory]);
 
   const handleSaveMood = () => {
     if (selectedMood) {
@@ -50,13 +87,12 @@ export default function BemEstarScreen() {
       };
       setMoodHistory([newEntry, ...moodHistory]);
       
-      // Find suggested content
       const suggestions = wellnessContent.filter(item => 
         item.relatedMoods?.includes(selectedMood.label)
       );
       setSuggestedContent(suggestions);
 
-      setSelectedMood(null); // Reset selection
+      setSelectedMood(null);
     }
   };
 
