@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { wellnessContent, getContentIcon } from '../../data/wellnessContent';
 
 type MoodOption = {
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
@@ -18,68 +20,6 @@ const moodOptions: MoodOption[] = [
 type MoodEntry = {
   mood: MoodOption;
   timestamp: Date;
-};
-
-const wellnessContent = [
-  {
-    id: '1',
-    type: 'audio',
-    title: 'Respiração Diafragmática',
-    category: 'Respiração',
-    duration: '3 min',
-  },
-  {
-    id: '2',
-    type: 'audio',
-    title: 'Meditação para Foco',
-    category: 'Meditação',
-    duration: '5 min',
-  },
-  {
-    id: '3',
-    type: 'text',
-    title: 'Entendendo a Ansiedade',
-    category: 'Ansiedade',
-  },
-  {
-    id: '4',
-    type: 'podcast',
-    title: 'Pílula de Calma #1',
-    category: 'Relaxamento',
-    duration: '2 min',
-  },
-  {
-    id: '5',
-    type: 'text',
-    title: 'Construindo sua Autoestima',
-    category: 'Autoestima',
-  },
-  {
-    id: '6',
-    type: 'audio',
-    title: 'Relaxamento Progressivo',
-    category: 'Relaxamento',
-    duration: '7 min',
-  },
-  {
-    id: '7',
-    type: 'text',
-    title: 'Dicas para Manter o Foco',
-    category: 'Foco',
-  },
-];
-
-const getContentIcon = (type: 'audio' | 'text' | 'podcast') => {
-  switch (type) {
-    case 'audio':
-      return 'headphones';
-    case 'text':
-      return 'book-open-variant';
-    case 'podcast':
-      return 'podcast';
-    default:
-      return 'star-outline';
-  }
 };
 
 export default function BemEstarScreen() {
@@ -145,7 +85,7 @@ export default function BemEstarScreen() {
         <View style={styles.wellnessContainer}>
           <Text style={styles.wellnessTitle}>Conteúdos para seu Bem-estar</Text>
           {wellnessContent.map((item) => (
-            <Pressable key={item.id} style={styles.contentCard}>
+            <Pressable key={item.id} style={styles.contentCard} onPress={() => router.push(`/content/${item.id}`)}>
               <View style={styles.iconContainer}>
                 <MaterialCommunityIcons name={getContentIcon(item.type as 'audio' | 'text' | 'podcast')} size={24} color="#6A5ACD" />
               </View>
