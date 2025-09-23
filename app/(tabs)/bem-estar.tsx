@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Pressable, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { wellnessContent, getContentIcon, WellnessContent } from '../../data/wellnessContent';
+import { wellnessContent, WellnessContent } from '../../data/wellnessContent';
 import MoodChart from '../../components/MoodChart';
+import ContentCard from '../../components/ContentCard';
 
 type MoodOption = {
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
@@ -24,26 +24,13 @@ type MoodEntry = {
   timestamp: Date;
 };
 
-const ContentCard = ({ item }: { item: WellnessContent }) => (
-  <Pressable style={styles.contentCard} onPress={() => router.push(`/content/${item.id}`)}>
-    <View style={styles.iconContainer}>
-      <MaterialCommunityIcons name={getContentIcon(item.type as 'audio' | 'text' | 'podcast')} size={24} color="#6A5ACD" />
-    </View>
-    <View style={styles.cardTextContainer}>
-      <Text style={styles.cardTitle}>{item.title}</Text>
-      <Text style={styles.cardCategory}>{item.category}</Text>
-    </View>
-    {item.duration && (
-      <Text style={styles.cardDuration}>{item.duration}</Text>
-    )}
-  </Pressable>
-);
+const allCategories = ['Todos', ...Array.from(new Set(wellnessContent.map(item => item.category)))];
 
 export default function BemEstarScreen() {
   const [selectedMood, setSelectedMood] = useState<MoodOption | null>(null);
   const [moodHistory, setMoodHistory] = useState<MoodEntry[]>([]);
-  const [suggestedContent, setSuggestedContent] = useState<WellnessContent[]>([]);
   const isInitialMount = useRef(true);
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
 
   // Load mood history from storage on component mount
   useEffect(() => {
@@ -88,14 +75,22 @@ export default function BemEstarScreen() {
       };
       setMoodHistory([newEntry, ...moodHistory]);
       
-      const suggestions = wellnessContent.filter(item => 
+      // Suggest a category based on mood
+      const suggestedCategory = wellnessContent.find(item => 
         item.relatedMoods?.includes(selectedMood.label)
-      );
-      setSuggestedContent(suggestions);
+      )?.category;
+      
+      if (suggestedCategory) {
+        setSelectedCategory(suggestedCategory);
+      }
 
       setSelectedMood(null);
     }
   };
+
+  const filteredContent = wellnessContent.filter(item => 
+    selectedCategory === 'Todos' || item.category === selectedCategory
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -126,31 +121,30 @@ export default function BemEstarScreen() {
           <Text style={styles.saveButtonText}>Salvar Humor</Text>
         </Pressable>
 
-        {suggestedContent.length > 0 && (
-          <View style={styles.wellnessContainer}>
-            <Text style={styles.wellnessTitle}>Sugestões para você</Text>
-            {suggestedContent.map((item) => (
-              <ContentCard key={`sugg-${item.id}`} item={item} />
-            ))}
-          </View>
-        )}
-
         <View style={styles.historyContainer}>
-          <Text style={styles.historyTitle}>Histórico de Humor</Text>
           <MoodChart data={moodHistory} />
-          {moodHistory.map((entry, index) => (
-            <View key={index} style={styles.historyEntry}>
-              <MaterialCommunityIcons name={entry.mood.icon} size={24} color="#4A4A4A" />
-              <Text style={styles.historyText}>
-                Você se sentiu <Text style={{fontWeight: 'bold'}}>{entry.mood.label}</Text> em {entry.timestamp.toLocaleDateString('pt-BR')}
-              </Text>
-            </View>
-          ))}
         </View>
 
         <View style={styles.wellnessContainer}>
           <Text style={styles.wellnessTitle}>Explorar Conteúdos</Text>
-          {wellnessContent.map((item) => (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
+            {allCategories.map(category => (
+              <Pressable 
+                key={category}
+                style={[
+                  styles.categoryChip,
+                  selectedCategory === category && styles.selectedCategoryChip
+                ]}
+                onPress={() => setSelectedCategory(category)}
+              >
+                <Text style={[
+                  styles.categoryText,
+                  selectedCategory === category && styles.selectedCategoryText
+                ]}>{category}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+          {filteredContent.map((item) => (
             <ContentCard key={item.id} item={item} />
           ))}
         </View>
@@ -165,7 +159,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F3FF',
   },
   container: {
-    alignItems: 'center',
     padding: 20,
   },
   title: {
@@ -207,7 +200,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 30,
-    marginBottom: 40,
+    marginBottom: 20,
+    alignSelf: 'center',
   },
   disabledButton: {
     backgroundColor: '#C8A2C8',
@@ -221,84 +215,38 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
-  historyTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#4A4A4A',
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EAEAEA',
-    paddingBottom: 5,
-  },
-  historyEntry: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  historyText: {
-    marginLeft: 10,
-    fontSize: 14,
-    color: '#666',
-  },
-  emptyHistoryText: {
-    textAlign: 'center',
-    color: '#888',
-    marginTop: 20,
-  },
   wellnessContainer: {
     width: '100%',
     marginTop: 20,
   },
   wellnessTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '600',
     color: '#4A4A4A',
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EAEAEA',
-    paddingBottom: 5,
+    marginBottom: 20,
   },
-  contentCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  categoryScrollView: {
+    marginBottom: 20,
+  },
+  categoryChip: {
     backgroundColor: '#FFFFFF',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  iconContainer: {
-    backgroundColor: '#F5F3FF',
+    borderColor: '#DCDCDC',
+    borderWidth: 1,
     borderRadius: 20,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginRight: 10,
   },
-  cardTextContainer: {
-    flex: 1,
+  selectedCategoryChip: {
+    backgroundColor: '#6A5ACD',
+    borderColor: '#6A5ACD',
   },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#4A4A4A',
-  },
-  cardCategory: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: 2,
-  },
-  cardDuration: {
-    fontSize: 12,
+  categoryText: {
     color: '#6A5ACD',
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  selectedCategoryText: {
+    color: '#FFFFFF',
   },
 });
