@@ -107,7 +107,7 @@ export default function BemEstarScreen() {
               ]}
               onPress={() => setSelectedMood(option)}
             >
-              <MaterialCommunityIcons name={option.icon} size={40} color={selectedMood?.label === option.label ? '#FFFFFF' : '#6A5ACD'} />
+              <MaterialCommunityIcons name={option.icon} size={40} color={selectedMood?.label === option.label ? '#FFFFFF' : '#8A2BE2'} />
               <Text style={[styles.moodLabel, selectedMood?.label === option.label && styles.selectedLabel]}>{option.label}</Text>
             </Pressable>
           ))}
@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
     width: 65,
   },
   selectedMood: {
-    backgroundColor: '#6A5ACD',
-    borderColor: '#6A5ACD',
+    backgroundColor: '#8A2BE2',
+    borderColor: '#8A2BE2',
   },
   moodLabel: {
     marginTop: 5,
     fontSize: 12,
-    color: '#6A5ACD',
+    color: '#8A2BE2',
   },
   selectedLabel: {
     color: '#FFFFFF',
@@ -238,11 +238,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   selectedCategoryChip: {
-    backgroundColor: '#6A5ACD',
-    borderColor: '#6A5ACD',
+    backgroundColor: '#8A2BE2',
+    borderColor: '#8A2BE2',
   },
   categoryText: {
-    color: '#6A5ACD',
+    color: '#8A2BE2',
     fontSize: 14,
     fontWeight: '500',
   },

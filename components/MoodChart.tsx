@@ -73,12 +73,12 @@ export default function MoodChart({ data }: MoodChartProps) {
         <Svg height="100%" width="100%">
           <Defs>
             <LinearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%">
-              <Stop offset="0%" stopColor="#6A5ACD" stopOpacity={0.4} />
+              <Stop offset="0%" stopColor="#8A2BE2" stopOpacity={0.4} />
               <Stop offset="100%" stopColor="#F5F3FF" stopOpacity={0.1} />
             </LinearGradient>
           </Defs>
           <Path d={areaPath} fill="url(#gradient)" />
-          <Path d={linePath} fill="none" stroke="#6A5ACD" strokeWidth={3} />
+          <Path d={linePath} fill="none" stroke="#8A2BE2" strokeWidth={3} />
         </Svg>
       </View>
       <View style={styles.labelsContainer}>

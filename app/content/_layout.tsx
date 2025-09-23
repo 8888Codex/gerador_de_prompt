@@ -7,7 +7,7 @@ export default function ContentLayout() {
         headerStyle: {
           backgroundColor: '#FFFFFF',
         },
-        headerTintColor: '#6A5ACD',
+        headerTintColor: '#8A2BE2',
         headerTitleStyle: {
           fontWeight: 'bold',
         },

@@ -95,7 +95,7 @@ export default function ContentDetailScreen() {
       return (
         <View style={styles.playerContainer}>
           <View style={styles.artworkContainer}>
-            <MaterialCommunityIcons name={getContentIcon(content.type)} size={100} color="#6A5ACD" />
+            <MaterialCommunityIcons name={getContentIcon(content.type)} size={100} color="#8A2BE2" />
           </View>
 
           <View style={styles.trackInfo}>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#6A5ACD',
+    backgroundColor: '#8A2BE2',
     borderRadius: 3,
   },
   timeContainer: {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   playButton: {
-    backgroundColor: '#6A5ACD',
+    backgroundColor: '#8A2BE2',
     width: 80,
     height: 80,
     borderRadius: 40,

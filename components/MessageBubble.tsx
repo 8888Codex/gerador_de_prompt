@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
   },
   userContainer: {
-    backgroundColor: '#6A5ACD',
+    backgroundColor: '#8A2BE2',
     alignSelf: 'flex-end',
     borderBottomRightRadius: 5,
   },
