@@ -19,14 +19,14 @@ export default function MessageBubble({ text, isUser }: MessageBubbleProps) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 25,
     marginBottom: 10,
     maxWidth: '80%',
   },
   userContainer: {
-    backgroundColor: '#8A2BE2',
+    backgroundColor: '#6A5ACD',
     alignSelf: 'flex-end',
     borderBottomRightRadius: 5,
   },
