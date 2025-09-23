@@ -107,7 +107,7 @@ export default function BemEstarScreen() {
               ]}
               onPress={() => setSelectedMood(option)}
             >
-              <MaterialCommunityIcons name={option.icon} size={40} color={selectedMood?.label === option.label ? '#FFFFFF' : '#8A2BE2'} />
+              <MaterialCommunityIcons name={option.icon} size={40} color={selectedMood?.label === option.label ? '#FFFFFF' : '#22577A'} />
               <Text style={[styles.moodLabel, selectedMood?.label === option.label && styles.selectedLabel]}>{option.label}</Text>
             </Pressable>
           ))}
@@ -156,7 +156,7 @@ export default function BemEstarScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F5F3FF',
+    backgroundColor: '#F8F9FA',
   },
   container: {
     padding: 20,
@@ -184,19 +184,19 @@ const styles = StyleSheet.create({
     width: 65,
   },
   selectedMood: {
-    backgroundColor: '#8A2BE2',
-    borderColor: '#8A2BE2',
+    backgroundColor: '#22577A',
+    borderColor: '#22577A',
   },
   moodLabel: {
     marginTop: 5,
     fontSize: 12,
-    color: '#8A2BE2',
+    color: '#22577A',
   },
   selectedLabel: {
     color: '#FFFFFF',
   },
   saveButton: {
-    backgroundColor: '#8A2BE2',
+    backgroundColor: '#22577A',
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 30,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   disabledButton: {
-    backgroundColor: '#C8A2C8',
+    backgroundColor: '#A9C4D4',
   },
   saveButtonText: {
     color: '#FFFFFF',
@@ -238,11 +238,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   selectedCategoryChip: {
-    backgroundColor: '#8A2BE2',
-    borderColor: '#8A2BE2',
+    backgroundColor: '#22577A',
+    borderColor: '#22577A',
   },
   categoryText: {
-    color: '#8A2BE2',
+    color: '#22577A',
     fontSize: 14,
     fontWeight: '500',
   },

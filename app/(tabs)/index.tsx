@@ -174,7 +174,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F5F3FF",
+    backgroundColor: "#F8F9FA",
   },
   container: {
     flex: 1,
@@ -198,16 +198,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   suggestionChip: {
-    backgroundColor: "rgba(138, 43, 226, 0.1)",
+    backgroundColor: "rgba(34, 87, 122, 0.1)",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 18,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "rgba(138, 43, 226, 0.2)",
+    borderColor: "rgba(34, 87, 122, 0.2)",
   },
   suggestionText: {
-    color: "#8A2BE2",
+    color: "#22577A",
     fontSize: 14,
     fontWeight: '500',
   },
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   sendButton: {
-    backgroundColor: "#8A2BE2",
+    backgroundColor: "#22577A",
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 22,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#8A2BE2",
+    backgroundColor: "#22577A",
     paddingVertical: 15,
     alignItems: "center",
     justifyContent: "center",

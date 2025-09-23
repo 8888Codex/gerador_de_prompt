@@ -17,7 +17,7 @@ export default function SessaoScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F5F3FF',
+    backgroundColor: '#F8F9FA',
   },
   container: {
     flex: 1,
