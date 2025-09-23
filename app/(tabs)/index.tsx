@@ -15,6 +15,7 @@ import * as Linking from "expo-linking";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBubble from "../../components/MessageBubble";
 import { getBotResponse } from "../../data/botResponses";
+import TypingIndicator from "../../components/TypingIndicator";
 
 const CVV_PHONE_NUMBER = "188";
 
@@ -41,6 +42,7 @@ const initialMessages: Message[] = [
 export default function HomeScreen() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [isTyping, setIsTyping] = useState(false);
   const flatListRef = useRef<FlatList>(null);
   const isInitialMount = useRef(true);
 
@@ -89,6 +91,7 @@ export default function HomeScreen() {
       };
       setMessages(prevMessages => [...prevMessages, userMessage]);
       setMessage("");
+      setIsTyping(true);
 
       setTimeout(() => {
         const botText = getBotResponse(userMessageText);
@@ -97,8 +100,9 @@ export default function HomeScreen() {
           text: botText,
           isUser: false,
         };
+        setIsTyping(false);
         setMessages(prevMessages => [...prevMessages, botResponse]);
-      }, 1000);
+      }, 1500);
     }
   };
 
@@ -127,6 +131,7 @@ export default function HomeScreen() {
                 onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
                 onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
             />
+            {isTyping && <TypingIndicator />}
         </View>
 
         <View style={styles.suggestionsContainer}>
