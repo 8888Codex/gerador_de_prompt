@@ -15,7 +15,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="chat"
         options={{
           title: 'Chat',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="comments" color={color} />,
