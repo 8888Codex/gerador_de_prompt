@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { wellnessContent, getContentIcon, WellnessContent } from '../../data/wellnessContent';
+import MoodChart from '../../components/MoodChart';
 
 type MoodOption = {
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
@@ -135,19 +136,16 @@ export default function BemEstarScreen() {
         )}
 
         <View style={styles.historyContainer}>
-          <Text style={styles.historyTitle}>Seu Histórico</Text>
-          {moodHistory.length === 0 ? (
-            <Text style={styles.emptyHistoryText}>Nenhum registro ainda. Comece selecionando seu humor acima!</Text>
-          ) : (
-            moodHistory.map((entry, index) => (
-              <View key={index} style={styles.historyEntry}>
-                <MaterialCommunityIcons name={entry.mood.icon} size={24} color="#4A4A4A" />
-                <Text style={styles.historyText}>
-                  Você se sentiu <Text style={{fontWeight: 'bold'}}>{entry.mood.label}</Text> em {entry.timestamp.toLocaleDateString('pt-BR')}
-                </Text>
-              </View>
-            ))
-          )}
+          <Text style={styles.historyTitle}>Histórico de Humor</Text>
+          <MoodChart data={moodHistory} />
+          {moodHistory.map((entry, index) => (
+            <View key={index} style={styles.historyEntry}>
+              <MaterialCommunityIcons name={entry.mood.icon} size={24} color="#4A4A4A" />
+              <Text style={styles.historyText}>
+                Você se sentiu <Text style={{fontWeight: 'bold'}}>{entry.mood.label}</Text> em {entry.timestamp.toLocaleDateString('pt-BR')}
+              </Text>
+            </View>
+          ))}
         </View>
 
         <View style={styles.wellnessContainer}>
