@@ -1,14 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native';
+import { professionals } from '../../data/professionals';
+import ProfessionalCard from '../../components/ProfessionalCard';
 
 export default function SessaoScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Text style={styles.title}>Minha Sessão Mensal</Text>
-        <Text style={styles.subtitle}>
-          Em breve: agende e gerencie sua sessão com um psicólogo.
-        </Text>
+        <Text style={styles.title}>Profissionais Disponíveis</Text>
+        <FlatList
+          data={professionals}
+          renderItem={({ item }) => <ProfessionalCard professional={item} />}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingHorizontal: 20 }}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </SafeAreaView>
   );
@@ -21,19 +27,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    paddingTop: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: '600',
     color: '#4A4A4A',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
+    marginBottom: 20,
     textAlign: 'center',
   },
 });
